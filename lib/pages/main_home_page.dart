@@ -30,11 +30,7 @@ class _MainHomePageState extends State<MainHomePage> {
                   posicaoPagina = value;
                 });
               },
-              children: [
-                ListaPage(),
-                AdicionarPage(),
-                PerfilPage()
-              ],
+              children: [ListaPage(), AdicionarPage(), PerfilPage()],
             )),
             SizedBox(
               height: 60,
@@ -55,7 +51,7 @@ class _MainHomePageState extends State<MainHomePage> {
                       icon: Align(
                           child: FaIcon(
                         FontAwesomeIcons.listUl,
-                        size: 18,
+                        size: 22,
                       )),
                     ),
                     BottomNavigationBarItem(
@@ -63,15 +59,17 @@ class _MainHomePageState extends State<MainHomePage> {
                       icon: Align(
                           child: FaIcon(
                         FontAwesomeIcons.plus,
-                        size: 18,
+                        size: 22,
                       )),
                     ),
                     BottomNavigationBarItem(
                       label: "Perfil",
                       icon: Align(
                           child: FaIcon(
-                        FontAwesomeIcons.user,
-                        size: 18,
+                        posicaoPagina == 2
+                            ? FontAwesomeIcons.solidUser
+                            : FontAwesomeIcons.user,
+                        size: 22,
                       )),
                     ),
                   ]),

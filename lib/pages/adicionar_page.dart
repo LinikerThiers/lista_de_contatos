@@ -10,6 +10,11 @@ class AdicionarPage extends StatefulWidget {
 class _AdicionarPageState extends State<AdicionarPage> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(child: Scaffold(body: Container(),));
+    return SafeArea(
+        child: Scaffold(
+      body: Container(
+        color: Colors.grey[300],
+      ),
+    ));
   }
 }
