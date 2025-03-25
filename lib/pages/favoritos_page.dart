@@ -15,60 +15,83 @@ class _FavoritosPageState extends State<FavoritosPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: FavoritosAppBar(),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 5,
-            ),
-            Expanded(
-                child: ListView.builder(
-                    itemCount: 4,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                            color: Colors.grey.shade600,
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+      backgroundColor: Colors.white,
+      appBar: FavoritosAppBar(),
+      body: Column(
+        children: [
+          const SizedBox(height: 5),
+          Expanded(
+            child: ListView.builder(
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                final contactId = 'contact_$index';
+                return Dismissible(
+                  key: Key(contactId),
+                  direction: DismissDirection.endToStart,
+                  background: Container(
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.only(right: 20),
+                      color: Colors.black,
+                      child: FaIcon(
+                        FontAwesomeIcons.heartCircleXmark,
                         color: Colors.white,
-                        margin: EdgeInsets.symmetric(
-                          vertical: 8,
-                          horizontal: 16,
+                        size: 22,
+                      )),
+                  onDismissed: (direction) {
+                    setState(() {
+                      // favoritos remove
+                    });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('removido dos favoritos'),
+                      ),
+                    );
+                  },
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                        color: Colors.grey.shade600,
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    color: Colors.white,
+                    margin: const EdgeInsets.symmetric(
+                      vertical: 8,
+                      horizontal: 16,
+                    ),
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        radius: 20,
+                        backgroundImage: profileImagePath.isNotEmpty
+                            ? AssetImage(profileImagePath)
+                            : null,
+                        backgroundColor: Colors.grey[300],
+                        child: profileImagePath.isEmpty
+                            ? const Icon(Icons.person,
+                                color: Colors.black, size: 24)
+                            : null,
+                      ),
+                      title: Text(
+                        'Liniker Thiers',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
                         ),
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            radius: 20,
-                            backgroundImage: profileImagePath.isNotEmpty
-                                ? AssetImage(profileImagePath)
-                                : null,
-                            backgroundColor: Colors.grey[300],
-                            child: profileImagePath.isEmpty
-                                ? const Icon(Icons.person,
-                                    color: Colors.black, size: 24)
-                                : null,
-                          ),
-                          title: Text(
-                            'Liniker Thiers',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          subtitle: Text('(75) 9 0000-0000'),
-                          trailing: FaIcon(
-                            FontAwesomeIcons.solidStar,
-                            size: 18,
-                            color: Colors.black,
-                          ),
-                        ),
-                      );
-                    }))
-          ],
-        ));
+                      ),
+                      subtitle: const Text('(75) 9 0000-0000'),
+                      trailing: FaIcon(
+                        FontAwesomeIcons.penToSquare,
+                        size: 18,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

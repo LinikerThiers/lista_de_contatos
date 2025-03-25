@@ -22,7 +22,7 @@ class FavoritosAppBar extends StatelessWidget implements PreferredSizeWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
-          FaIcon(FontAwesomeIcons.solidStar),
+          FaIcon(FontAwesomeIcons.solidHeart),
         ],
       ),
       centerTitle: false,

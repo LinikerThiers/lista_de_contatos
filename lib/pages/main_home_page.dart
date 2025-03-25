@@ -67,8 +67,8 @@ class _MainHomePageState extends State<MainHomePage> {
                       icon: Align(
                           child: FaIcon(
                         posicaoPagina == 1
-                            ? FontAwesomeIcons.solidStar
-                            : FontAwesomeIcons.star,
+                            ? FontAwesomeIcons.solidHeart
+                            : FontAwesomeIcons.heart,
                         size: 22,
                       )),
                     ),

@@ -109,9 +109,21 @@ class _ListaPageState extends State<ListaPage> {
                         ),
                       ),
                       subtitle: Text('(75) 9 0000-0000'),
-                      trailing: FaIcon(
-                        FontAwesomeIcons.star,
-                        size: 18,
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          FaIcon(
+                            FontAwesomeIcons.heart,
+                            size: 18,
+                            color: Colors.black,
+                          ),
+                          SizedBox(width: 20),
+                          FaIcon(
+                            FontAwesomeIcons.penToSquare,
+                            size: 18,
+                            color: Colors.black,
+                          ),
+                        ],
                       ),
                     ),
                   ),
