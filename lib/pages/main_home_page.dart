@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:listadecontatos/pages/adicionar_page.dart';
+import 'package:listadecontatos/pages/favoritos_page.dart';
 import 'package:listadecontatos/pages/lista_page.dart';
 import 'package:listadecontatos/pages/perfil_page.dart';
 
@@ -30,7 +30,7 @@ class _MainHomePageState extends State<MainHomePage> {
                 posicaoPagina = value;
               });
             },
-            children: [ListaPage(), AdicionarPage(), PerfilPage()],
+            children: [ListaPage(), FavoritosPage(), PerfilPage()],
           )),
           Container(
             decoration: BoxDecoration(
@@ -64,7 +64,7 @@ class _MainHomePageState extends State<MainHomePage> {
                       )),
                     ),
                     BottomNavigationBarItem(
-                      label: "Adicionar",
+                      label: "Favoritos",
                       icon: Align(
                           child: FaIcon(
                         posicaoPagina == 1
