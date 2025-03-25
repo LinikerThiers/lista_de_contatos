@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+class ListaAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String userName;
   final String? profileImagePath;
 
-  const CustomAppBar({
+  const ListaAppBar({
     super.key,
     required this.userName,
     this.profileImagePath,

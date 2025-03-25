@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:listadecontatos/shared/widget/custom_app_bar.dart';
+import 'package:listadecontatos/shared/widget/lista_app_bar.dart';
 
 class ListaPage extends StatefulWidget {
   const ListaPage({super.key});
@@ -17,7 +17,7 @@ class _ListaPageState extends State<ListaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(
+      appBar: ListaAppBar(
         userName: "Liniker",
         profileImagePath: "assets/profile_image.jpg",
       ),

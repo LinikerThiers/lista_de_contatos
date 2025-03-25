@@ -13,8 +13,7 @@ class SplashScreenPage extends StatefulWidget {
 class _SplashScreenPageState extends State<SplashScreenPage> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
         child: Row(
@@ -62,12 +61,9 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
                           PageTransition(
                             child:
                                 MainHomePage(title: 'Flutter Demo Home Page'),
-                            type: PageTransitionType
-                                .bottomToTop, 
-                            duration: Duration(
-                                milliseconds: 1000), 
-                            curve:
-                                Curves.easeInOut, 
+                            type: PageTransitionType.bottomToTop,
+                            duration: Duration(milliseconds: 1000),
+                            curve: Curves.easeInOut,
                           ),
                         );
                       }),
@@ -77,6 +73,6 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
           ],
         ),
       ),
-    ));
+    );
   }
 }

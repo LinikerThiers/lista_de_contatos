@@ -42,7 +42,6 @@ class _MainHomePageState extends State<MainHomePage> {
               )
             ),
             child: SizedBox(
-              // height: 60,
               child: BottomNavigationBar(
                   backgroundColor: Colors.white,
                   selectedItemColor: Colors.black,
