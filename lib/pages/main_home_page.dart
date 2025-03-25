@@ -18,76 +18,75 @@ class _MainHomePageState extends State<MainHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
-          children: [
-            Expanded(
-                child: PageView(
-              controller: controller,
-              onPageChanged: (value) {
-                setState(() {
-                  posicaoPagina = value;
-                });
-              },
-              children: [ListaPage(), AdicionarPage(), PerfilPage()],
-            )),
-            Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(
-                    color: Colors.grey.shade300,
-                    width: 1,
-                  )
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Column(
+        children: [
+          Expanded(
+              child: PageView(
+            controller: controller,
+            onPageChanged: (value) {
+              setState(() {
+                posicaoPagina = value;
+              });
+            },
+            children: [ListaPage(), AdicionarPage(), PerfilPage()],
+          )),
+          Container(
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  color: Colors.grey.shade300,
+                  width: 1,
                 )
-              ),
-              child: SizedBox(
-                height: 60,
-                child: BottomNavigationBar(
-                    backgroundColor: Colors.white,
-                    selectedItemColor: Colors.black,
-                    unselectedItemColor: Colors.grey[400],
-                    type: BottomNavigationBarType.fixed,
-                    onTap: (value) {
-                      controller.jumpToPage(value);
-                    },
-                    currentIndex: posicaoPagina,
-                    showSelectedLabels: false,
-                    showUnselectedLabels: false,
-                    items: [
-                      BottomNavigationBarItem(
-                        label: "Lista",
-                        icon: Align(
-                            child: FaIcon(
-                          FontAwesomeIcons.listUl,
-                          size: 22,
-                        )),
-                      ),
-                      BottomNavigationBarItem(
-                        label: "Adicionar",
-                        icon: Align(
-                            child: FaIcon(
-                          posicaoPagina == 1
-                              ? FontAwesomeIcons.solidStar
-                              : FontAwesomeIcons.star,
-                          size: 22,
-                        )),
-                      ),
-                      BottomNavigationBarItem(
-                        label: "Perfil",
-                        icon: Align(
-                            child: FaIcon(
-                          posicaoPagina == 2
-                              ? FontAwesomeIcons.solidUser
-                              : FontAwesomeIcons.user,
-                          size: 22,
-                        )),
-                      ),
-                    ]),
-              ),
-            )
-          ],
-        ),
+              )
+            ),
+            child: SizedBox(
+              // height: 60,
+              child: BottomNavigationBar(
+                  backgroundColor: Colors.white,
+                  selectedItemColor: Colors.black,
+                  unselectedItemColor: Colors.grey[400],
+                  type: BottomNavigationBarType.fixed,
+                  onTap: (value) {
+                    controller.jumpToPage(value);
+                  },
+                  currentIndex: posicaoPagina,
+                  showSelectedLabels: false,
+                  showUnselectedLabels: false,
+                  items: [
+                    BottomNavigationBarItem(
+                      label: "Lista",
+                      icon: Align(
+                          child: FaIcon(
+                        FontAwesomeIcons.listUl,
+                        size: 22,
+                      )),
+                    ),
+                    BottomNavigationBarItem(
+                      label: "Adicionar",
+                      icon: Align(
+                          child: FaIcon(
+                        posicaoPagina == 1
+                            ? FontAwesomeIcons.solidStar
+                            : FontAwesomeIcons.star,
+                        size: 22,
+                      )),
+                    ),
+                    BottomNavigationBarItem(
+                      label: "Perfil",
+                      icon: Align(
+                          child: FaIcon(
+                        posicaoPagina == 2
+                            ? FontAwesomeIcons.solidUser
+                            : FontAwesomeIcons.user,
+                        size: 22,
+                      )),
+                    ),
+                  ]),
+            ),
+          )
+        ],
       ),
     );
   }

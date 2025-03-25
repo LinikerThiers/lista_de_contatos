@@ -11,11 +11,11 @@ class ListaPage extends StatefulWidget {
 
 class _ListaPageState extends State<ListaPage> {
   String profileImagePath = "";
+  bool ordemAlfabetica = true;
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
         userName: "Liniker",
@@ -30,12 +30,27 @@ class _ListaPageState extends State<ListaPage> {
           ),
           Padding(
             padding: EdgeInsets.all(16),
-            child: Text(
-              "Lista de Contatos",
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w500,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Lista de Contatos",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      ordemAlfabetica = !ordemAlfabetica;
+                    });
+                  },
+                  child: ordemAlfabetica
+                      ? FaIcon(FontAwesomeIcons.sort)
+                      : FaIcon(FontAwesomeIcons.arrowDownAZ),
+                )
+              ],
             ),
           ),
           Expanded(
@@ -63,7 +78,14 @@ class _ListaPageState extends State<ListaPage> {
                     );
                   },
                   child: Card(
-                    color: Colors.grey[100],
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                        color: Colors.grey.shade600,
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    color: Colors.white,
                     margin: EdgeInsets.symmetric(
                       vertical: 8,
                       horizontal: 16,
@@ -87,7 +109,10 @@ class _ListaPageState extends State<ListaPage> {
                         ),
                       ),
                       subtitle: Text('(75) 9 0000-0000'),
-                      trailing: FaIcon(FontAwesomeIcons.star, size: 18,),
+                      trailing: FaIcon(
+                        FontAwesomeIcons.star,
+                        size: 18,
+                      ),
                     ),
                   ),
                 );
@@ -104,6 +129,6 @@ class _ListaPageState extends State<ListaPage> {
           color: Colors.white,
         ),
       ),
-    ));
+    );
   }
 }
