@@ -32,47 +32,59 @@ class _MainHomePageState extends State<MainHomePage> {
               },
               children: [ListaPage(), AdicionarPage(), PerfilPage()],
             )),
-            SizedBox(
-              height: 60,
-              child: BottomNavigationBar(
-                  backgroundColor: Colors.white,
-                  selectedItemColor: Colors.black,
-                  unselectedItemColor: Colors.grey[400],
-                  type: BottomNavigationBarType.fixed,
-                  onTap: (value) {
-                    controller.jumpToPage(value);
-                  },
-                  currentIndex: posicaoPagina,
-                  showSelectedLabels: false,
-                  showUnselectedLabels: false,
-                  items: [
-                    BottomNavigationBarItem(
-                      label: "Lista",
-                      icon: Align(
-                          child: FaIcon(
-                        FontAwesomeIcons.listUl,
-                        size: 22,
-                      )),
-                    ),
-                    BottomNavigationBarItem(
-                      label: "Adicionar",
-                      icon: Align(
-                          child: FaIcon(
-                        FontAwesomeIcons.plus,
-                        size: 22,
-                      )),
-                    ),
-                    BottomNavigationBarItem(
-                      label: "Perfil",
-                      icon: Align(
-                          child: FaIcon(
-                        posicaoPagina == 2
-                            ? FontAwesomeIcons.solidUser
-                            : FontAwesomeIcons.user,
-                        size: 22,
-                      )),
-                    ),
-                  ]),
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(
+                    color: Colors.grey.shade300,
+                    width: 1,
+                  )
+                )
+              ),
+              child: SizedBox(
+                height: 60,
+                child: BottomNavigationBar(
+                    backgroundColor: Colors.white,
+                    selectedItemColor: Colors.black,
+                    unselectedItemColor: Colors.grey[400],
+                    type: BottomNavigationBarType.fixed,
+                    onTap: (value) {
+                      controller.jumpToPage(value);
+                    },
+                    currentIndex: posicaoPagina,
+                    showSelectedLabels: false,
+                    showUnselectedLabels: false,
+                    items: [
+                      BottomNavigationBarItem(
+                        label: "Lista",
+                        icon: Align(
+                            child: FaIcon(
+                          FontAwesomeIcons.listUl,
+                          size: 22,
+                        )),
+                      ),
+                      BottomNavigationBarItem(
+                        label: "Adicionar",
+                        icon: Align(
+                            child: FaIcon(
+                          posicaoPagina == 1
+                              ? FontAwesomeIcons.solidStar
+                              : FontAwesomeIcons.star,
+                          size: 22,
+                        )),
+                      ),
+                      BottomNavigationBarItem(
+                        label: "Perfil",
+                        icon: Align(
+                            child: FaIcon(
+                          posicaoPagina == 2
+                              ? FontAwesomeIcons.solidUser
+                              : FontAwesomeIcons.user,
+                          size: 22,
+                        )),
+                      ),
+                    ]),
+              ),
             )
           ],
         ),
