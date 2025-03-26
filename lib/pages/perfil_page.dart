@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -26,14 +27,10 @@ class _PerfilPageState extends State<PerfilPage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-        ),
         body: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: 20),
+              SizedBox(height: 70),
               Center(
                 child: CircleAvatar(
                   radius: 60,
@@ -75,7 +72,7 @@ class _PerfilPageState extends State<PerfilPage> {
                   FontAwesomeIcons.penToSquare,
                   color: Colors.black,
                 ),
-                label: Text('Editar Perfil'),
+                label: Text("EDITAR_PERFIL".tr()),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: Colors.black,
@@ -104,7 +101,7 @@ class _PerfilPageState extends State<PerfilPage> {
                           )),
                       child: ListTile(
                         title: Text(
-                          'Compartilhar Perfil',
+                          "COMPARTILHAR_PERFIL".tr(),
                           style: TextStyle(color: Colors.black),
                         ),
                         trailing: FaIcon(FontAwesomeIcons.shareNodes,
@@ -128,12 +125,18 @@ class _PerfilPageState extends State<PerfilPage> {
                           size: 18,
                         ),
                         title: Text(
-                          'Idioma',
+                          "IDIOMA".tr(),
                           style: TextStyle(color: Colors.black),
                         ),
                         trailing: FaIcon(FontAwesomeIcons.arrowRight,
                             size: 16, color: Colors.black),
-                        onTap: () {},
+                        onTap: () {
+                          if (context.locale.toString() == "pt_BR") {
+                            context.setLocale(Locale('en', 'US'));
+                          } else {
+                            context.setLocale(Locale('pt', 'BR'));
+                          }
+                        },
                       ),
                     ),
                     Card(
@@ -148,7 +151,7 @@ class _PerfilPageState extends State<PerfilPage> {
                       ),
                       child: ListTile(
                         title: Text(
-                          'Tema',
+                          "TEMA".tr(),
                           style: TextStyle(
                               color: _isDarkMode ? Colors.white : Colors.black),
                         ),

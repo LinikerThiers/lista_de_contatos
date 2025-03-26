@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:listadecontatos/shared/widget/lista_app_bar.dart';
@@ -34,7 +35,7 @@ class _ListaPageState extends State<ListaPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Lista de Contatos",
+                  "LISTA_DE_CONTATOS".tr(),
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w500,
@@ -73,7 +74,7 @@ class _ListaPageState extends State<ListaPage> {
                   onDismissed: (direction) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('name removido'),
+                        content: Text("CONTATO_REMOVIDO".tr()),
                       ),
                     );
                   },

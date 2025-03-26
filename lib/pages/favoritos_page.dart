@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:listadecontatos/shared/widget/favoritos_app_bar.dart';
@@ -43,7 +44,7 @@ class _FavoritosPageState extends State<FavoritosPage> {
                     });
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('removido dos favoritos'),
+                        content: Text("REMOVIDO_DOS_FAVORITOS".tr()),
                       ),
                     );
                   },

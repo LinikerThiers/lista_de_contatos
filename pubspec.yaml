@@ -38,6 +38,7 @@ dependencies:
   flutter_native_splash: ^2.4.4
   animated_text_kit: ^4.2.2
   page_transition: ^2.2.1
+  easy_localization: ^3.0.7+1
 
 dev_dependencies:
   flutter_launcher_icons: "^0.14.3"
@@ -66,6 +67,8 @@ flutter:
   assets:
     - assets/profile_image.jpg
     - assets/icon/icon.png
+    - assets/icon/lista_logo1.png
+    - assets/translations/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -94,9 +97,10 @@ flutter:
   # see https://flutter.dev/to/font-from-package
 
 flutter_launcher_icons:
-  image_path: "assets/icon/icon.png"  
+  image_path: "assets/icon/lista_logo1.png"  
   android: true  
-  ios: true   
+  ios: true  
+  remove_alpha_ios: true 
 
 
 flutter_native_splash:

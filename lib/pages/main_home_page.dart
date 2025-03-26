@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:listadecontatos/pages/favoritos_page.dart';
@@ -55,7 +56,7 @@ class _MainHomePageState extends State<MainHomePage> {
                   showUnselectedLabels: false,
                   items: [
                     BottomNavigationBarItem(
-                      label: "Lista",
+                      label: "LISTA".tr(),
                       icon: Align(
                           child: FaIcon(
                         FontAwesomeIcons.listUl,
@@ -63,7 +64,7 @@ class _MainHomePageState extends State<MainHomePage> {
                       )),
                     ),
                     BottomNavigationBarItem(
-                      label: "Favoritos",
+                      label: "FAVORITOS".tr(),
                       icon: Align(
                           child: FaIcon(
                         posicaoPagina == 1
@@ -73,7 +74,7 @@ class _MainHomePageState extends State<MainHomePage> {
                       )),
                     ),
                     BottomNavigationBarItem(
-                      label: "Perfil",
+                      label: "PERFIL".tr(),
                       icon: Align(
                           child: FaIcon(
                         posicaoPagina == 2
