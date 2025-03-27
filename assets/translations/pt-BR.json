@@ -12,5 +12,23 @@
     "TEMA": "Tema",
     "REMOVIDO_DOS_FAVORITOS": "Removido dos Favoritos",
     "LISTA": "Lista",
-    "PERFIL": "Perfil"
+    "PERFIL": "Perfil",
+    "RELATAR_PROBLEMA": "Relatar um Problema",
+    "SAIR": "Sair",
+    "EDIT_PROFILE_NOME": "Nome",
+    "EDIT_PROFILE_DIGITAR_NOME": "Digite seu nome",
+    "EDIT_PROFILE_EMAIL": "E-mail",
+    "EDIT_PROFILE_DIGITAR_EMAIL": "Digite seu e-mail",
+    "EDIT_PROFILE_TELEFONE" : "Telefone",
+    "EDIT_PROFILE_DIGITAR_TELEFONE": "Digite seu telefone",
+    "EDIT_PROFILE_DATA_DE_ANIVERSARIO": "Aniversário",
+    "EDIT_PROFILE_DATA_DE_ANIVERSARIO_DIGITAR" : "Seu aniversário",
+    "EDIT_PROFILE_ENDERECO": "Endereço",
+    "EDIT_PROFILE_DIGITAR_ENDERECO" : "Seu endereço",
+    "EDIT_PROFILE_INSTAGRAM": "Instagram",
+    "EDIT_PROFILE_DIGITAR_INSTAGRAM" : "seu_IG",
+    "EDIT_PROFILE_SALVAR_ALTERACOES": "Salvar Alterações",
+    "GALERIA": "Gallery",
+    "CAMERA": "Câmera"
+
 }

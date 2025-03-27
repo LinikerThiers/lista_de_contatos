@@ -1,11 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:listadecontatos/pages/editar_perfil.dart';
 import 'package:listadecontatos/pages/linguagens_page.dart';
 import 'package:listadecontatos/utils/gerenciador_de_temas.dart';
-import 'package:provider/provider.dart'; 
+import 'package:provider/provider.dart';
 
-class PerfilPage extends StatelessWidget { 
+class PerfilPage extends StatelessWidget {
   const PerfilPage({super.key});
 
   @override
@@ -64,7 +65,10 @@ class PerfilPage extends StatelessWidget {
               ),
               const SizedBox(height: 15),
               ElevatedButton.icon(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => EditarPerfil()));
+                },
                 icon: FaIcon(
                   FontAwesomeIcons.penToSquare,
                   color: isDarkMode ? Colors.white : Colors.black,
@@ -77,7 +81,8 @@ class PerfilPage extends StatelessWidget {
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: isDarkMode ? Colors.grey[800] : Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                       side: BorderSide(
@@ -125,11 +130,6 @@ class PerfilPage extends StatelessWidget {
                             width: 1,
                           )),
                       child: ListTile(
-                        leading: FaIcon(
-                          FontAwesomeIcons.language,
-                          color: isDarkMode ? Colors.white : Colors.black,
-                          size: 18,
-                        ),
                         title: Text(
                           "IDIOMA".tr(),
                           style: TextStyle(
@@ -145,7 +145,8 @@ class PerfilPage extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const LinguagensPage()));
+                                  builder: (context) =>
+                                      const LinguagensPage()));
                         },
                       ),
                     ),
@@ -173,7 +174,61 @@ class PerfilPage extends StatelessWidget {
                           color: isDarkMode ? Colors.white : Colors.black,
                           size: 18,
                         ),
-                        onTap: () => themeManager.toggleTheme(), 
+                        onTap: () => themeManager.toggleTheme(),
+                      ),
+                    ),
+                    Card(
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                      color: isDarkMode ? Colors.grey[800] : Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: BorderSide(
+                          color: Colors.grey.shade600,
+                          width: 1,
+                        ),
+                      ),
+                      child: ListTile(
+                        title: Text(
+                          "RELATAR_PROBLEMA".tr(),
+                          style: TextStyle(
+                            color: isDarkMode ? Colors.white : Colors.black,
+                          ),
+                        ),
+                        trailing: FaIcon(
+                          FontAwesomeIcons.arrowRight,
+                          color: isDarkMode ? Colors.white : Colors.black,
+                          size: 18,
+                        ),
+                        onTap: () {
+                          //ir para proxima pagina de relatar problema
+                        },
+                      ),
+                    ),
+                    Card(
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                      color: isDarkMode ? Colors.grey[800] : Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: BorderSide(
+                          color: Colors.grey.shade600,
+                          width: 1,
+                        ),
+                      ),
+                      child: ListTile(
+                        title: Text(
+                          "SAIR".tr(),
+                          style: TextStyle(
+                            color: isDarkMode ? Colors.white : Colors.black,
+                          ),
+                        ),
+                        trailing: FaIcon(
+                          FontAwesomeIcons.arrowRightFromBracket,
+                          color: isDarkMode ? Colors.white : Colors.black,
+                          size: 18,
+                        ),
+                        onTap: () {
+                          //Lógica para deslogar
+                        },
                       ),
                     ),
                   ],

@@ -12,6 +12,23 @@
     "TEMA": "Theme",
     "REMOVIDO_DOS_FAVORITOS": "Removed from Favorites",
     "LISTA": "List",
-    "PERFIL": "Profile"
+    "PERFIL": "Profile",
+    "RELATAR_PROBLEMA": "Report a Problem",
+    "SAIR": "Logout",
+    "EDIT_PROFILE_NOME": "Name",
+    "EDIT_PROFILE_DIGITAR_NOME": "Enter your name",
+    "EDIT_PROFILE_EMAIL": "E-mail",
+    "EDIT_PROFILE_DIGITAR_EMAIL": "Enter your email",
+    "EDIT_PROFILE_TELEFONE" : "Phone Number",
+    "EDIT_PROFILE_DIGITAR_TELEFONE": "Enter your phone number",
+    "EDIT_PROFILE_DATA_DE_ANIVERSARIO": "Birthday",
+    "EDIT_PROFILE_DATA_DE_ANIVERSARIO_DIGITAR" : "Your birthday",
+    "EDIT_PROFILE_ENDERECO": "Address",
+    "EDIT_PROFILE_DIGITAR_ENDERECO" : "Your address",
+    "EDIT_PROFILE_INSTAGRAM": "Instagram",
+    "EDIT_PROFILE_DIGITAR_INSTAGRAM" : "your_IG",
+    "EDIT_PROFILE_SALVAR_ALTERACOES": "Save Changes",
+    "GALERIA": "Gallery",
+    "CAMERA": "Camera"
 
 }
