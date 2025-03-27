@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:listadecontatos/utils/gerenciador_de_temas.dart'; 
 
 class ListaAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String userName;
@@ -13,10 +15,16 @@ class ListaAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeManager = Provider.of<ThemeManager>(context);
+    final isDarkMode = themeManager.isDarkMode;
+
     return AppBar(
-      backgroundColor: Colors.white,
-      surfaceTintColor: Colors.white,
+      backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
+      surfaceTintColor: isDarkMode ? Colors.grey[900] : Colors.white,
       elevation: 0,
+      iconTheme: IconThemeData(
+        color: isDarkMode ? Colors.white : Colors.black,
+      ),
       title: Row(
         children: [
           CircleAvatar(
@@ -25,16 +33,20 @@ class ListaAppBar extends StatelessWidget implements PreferredSizeWidget {
                     ? AssetImage(profileImagePath!) as ImageProvider
                     : null,
             radius: 20,
-            backgroundColor: Colors.grey[300],
+            backgroundColor: isDarkMode ? Colors.grey[700] : Colors.grey[300],
             child: profileImagePath == null || profileImagePath!.isEmpty
-                ? const Icon(Icons.person, color: Colors.black, size: 24)
+                ? Icon(
+                    Icons.person,
+                    color: isDarkMode ? Colors.white : Colors.black,
+                    size: 24,
+                  )
                 : null,
           ),
           const SizedBox(width: 10),
           Text(
             "${"OLA".tr()} $userName",
-            style: const TextStyle(
-              color: Colors.black,
+            style: TextStyle(
+              color: isDarkMode ? Colors.white : Colors.black,
               fontSize: 18,
               fontWeight: FontWeight.w500,
             ),
@@ -43,11 +55,12 @@ class ListaAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       centerTitle: false,
       bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0),
-          child: Container(
-            color: Colors.grey[300],
-            height: 1,
-          )),
+        preferredSize: const Size.fromHeight(1.0),
+        child: Container(
+          color: isDarkMode ? Colors.grey[700] : Colors.grey[300],
+          height: 1,
+        ),
+      ),
     );
   }
 

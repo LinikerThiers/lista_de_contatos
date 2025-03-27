@@ -40,6 +40,10 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
                   child: AnimatedTextKit(
                       animatedTexts: [
                         RotateAnimatedText(
+                          "",
+                          duration: Duration(milliseconds: 100),
+                        ),
+                        RotateAnimatedText(
                           'PRATICO'.tr(),
                           duration: Duration(milliseconds: 1000),
                         ),
