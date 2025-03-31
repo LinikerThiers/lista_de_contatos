@@ -104,12 +104,12 @@ class _LinguagensPageState extends State<LinguagensPage> {
             const SizedBox(height: 40),
             GestureDetector(
               onTap: () => _mudarIdioma("pt", const Locale('pt', 'BR')),
-              child: _criarOpcaoIdioma("Português", "pt", const Locale('pt', 'BR'), isDarkMode),
+              child: _criarOpcaoIdioma("PORTUGUES".tr(), "pt", const Locale('pt', 'BR'), isDarkMode),
             ),
             const SizedBox(height: 8),
             GestureDetector(
               onTap: () => _mudarIdioma("en", const Locale('en', 'US')),
-              child: _criarOpcaoIdioma("Inglês", "en", const Locale('en', 'US'), isDarkMode),
+              child: _criarOpcaoIdioma("INGLES".tr(), "en", const Locale('en', 'US'), isDarkMode),
             ),
           ],
         ),

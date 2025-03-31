@@ -29,6 +29,10 @@
     "EDIT_PROFILE_DIGITAR_INSTAGRAM" : "your_IG",
     "EDIT_PROFILE_SALVAR_ALTERACOES": "Save Changes",
     "GALERIA": "Gallery",
-    "CAMERA": "Camera"
+    "CAMERA": "Camera",
+    "PORTUGUES": "Portuguese",
+    "INGLES": "English",
+    "ENVIAR": "Send",
+    "DESCREVA_PROBLEMA": "Describe a Problem"
 
 }

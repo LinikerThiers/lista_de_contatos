@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:listadecontatos/pages/editar_perfil.dart';
 import 'package:listadecontatos/pages/linguagens_page.dart';
+import 'package:listadecontatos/pages/reportar_problema_page.dart';
 import 'package:listadecontatos/utils/gerenciador_de_temas.dart';
 import 'package:provider/provider.dart';
 
@@ -200,6 +201,10 @@ class PerfilPage extends StatelessWidget {
                           size: 18,
                         ),
                         onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => ReportarProblemaPage()));
                           //ir para proxima pagina de relatar problema
                         },
                       ),
