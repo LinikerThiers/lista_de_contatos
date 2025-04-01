@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:listadecontatos/pages/adicionar_contato_page.dart';
 import 'package:listadecontatos/shared/widget/lista_app_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:listadecontatos/utils/gerenciador_de_temas.dart'; // Ajuste o caminho
@@ -155,7 +156,9 @@ class _ListaPageState extends State<ListaPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (_) => AdicionarContatoPage()));
+        },
         backgroundColor: isDarkMode ? Colors.grey[800] : Colors.black,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
