@@ -52,5 +52,11 @@
 			<string>en</string>
 			<string>pt</string>
 		</array>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string> your app needs permission for the photo library</string>
+		<key>NSCameraUsageDescription</key>
+		<string>your app needs access to the camera</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>your app needs access to the microphone</string>
 	</dict>
 </plist>
