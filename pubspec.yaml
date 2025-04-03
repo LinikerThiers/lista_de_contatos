@@ -72,7 +72,7 @@ flutter:
   assets:
     - assets/profile_image.jpg
     - assets/icon/icon.png
-    - assets/icon/lista_logo1.png
+    - assets/icon/lista_de_contatos_logo_2.png
     - assets/translations/
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -102,10 +102,10 @@ flutter:
   # see https://flutter.dev/to/font-from-package
 
 flutter_launcher_icons:
-  image_path: "assets/icon/lista_logo1.png"  
   android: true  
   ios: true  
   remove_alpha_ios: true 
+  image_path: "assets/icon/lista_de_contatos_logo.png"  
 
 
 flutter_native_splash:

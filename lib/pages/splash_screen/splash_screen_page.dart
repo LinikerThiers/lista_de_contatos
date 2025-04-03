@@ -24,7 +24,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
               width: 20,
             ),
             Image.asset(
-              "assets/icon/icon.png",
+              "assets/icon/lista_de_contatos_logo.png",
               height: 80,
             ),
             Transform.translate(
