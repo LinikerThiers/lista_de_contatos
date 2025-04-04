@@ -194,7 +194,12 @@ class _ListaPageState extends State<ListaPage> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 InkWell(
-                                  onTap: () async {},
+                                  onTap: () async {
+                                    await contatosBack4appRepository.atualizaFavorito(contato);
+                                    setState(() {
+                                      contato.favorito = !(contato.favorito!);
+                                    });
+                                  },
                                   child: FaIcon(
                                     contato.favorito! ? FontAwesomeIcons.solidHeart : FontAwesomeIcons.heart,
                                     size: 18,
