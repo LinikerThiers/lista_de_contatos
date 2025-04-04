@@ -26,10 +26,10 @@ class _ListaPageState extends State<ListaPage> {
   @override
   void initState() {
     super.initState();
-    obterContatos();
+    carregarContatos();
   }
 
-  Future<void> obterContatos() async {
+  Future<void> carregarContatos() async {
     setState(() {
       carregando = true;
     });

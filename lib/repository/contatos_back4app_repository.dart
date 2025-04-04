@@ -12,6 +12,12 @@ class ContatosBack4appRepository {
     return ListaDeContatosModel.fromJson(result.data);
   }
 
+  Future<ListaDeContatosModel> obterContatosFavoritos() async {
+    var url = "/Contatos?where={\"favorito\":true}";
+    var result = await _customDio.dio.get(url);
+    return ListaDeContatosModel.fromJson(result.data);
+  }
+
   Future<bool> removerContato(String objectId) async {
     try {
       await _customDio.dio.delete("/Contatos/$objectId");
