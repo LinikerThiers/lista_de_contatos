@@ -128,14 +128,18 @@ class _ListaPageState extends State<ListaPage> {
 
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text(removido
-                                  ? "CONTATO_REMOVIDO".tr()
-                                  : "ERRO_REMOVER_CONTATO".tr(), style: TextStyle(
-                                    color: isDarkMode ? Colors.white : Colors.grey[300],
-                                  ),),
-                              backgroundColor: isDarkMode
-                                  ? Colors.grey[800]
-                                  : Colors.black,
+                              content: Text(
+                                removido
+                                    ? "CONTATO_REMOVIDO".tr()
+                                    : "ERRO_REMOVER_CONTATO".tr(),
+                                style: TextStyle(
+                                  color: isDarkMode
+                                      ? Colors.white
+                                      : Colors.grey[300],
+                                ),
+                              ),
+                              backgroundColor:
+                                  isDarkMode ? Colors.grey[800] : Colors.black,
                             ),
                           );
                         },
@@ -189,11 +193,14 @@ class _ListaPageState extends State<ListaPage> {
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                FaIcon(
-                                  FontAwesomeIcons.heart,
-                                  size: 18,
-                                  color:
-                                      isDarkMode ? Colors.white : Colors.black,
+                                InkWell(
+                                  onTap: () async {},
+                                  child: FaIcon(
+                                    contato.favorito! ? FontAwesomeIcons.solidHeart : FontAwesomeIcons.heart,
+                                    size: 18,
+                                    color:
+                                        isDarkMode ? Colors.white : Colors.black,
+                                  ),
                                 ),
                                 const SizedBox(width: 20),
                                 FaIcon(
