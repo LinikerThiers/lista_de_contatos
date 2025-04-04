@@ -19,6 +19,7 @@ class _ListaPageState extends State<ListaPage> {
   ContatosBack4appRepository contatosBack4appRepository =
       ContatosBack4appRepository();
   var _contatosBack4app = ListaDeContatosModel([]);
+  List<ContatoBack4appModel> _contatosOriginais = [];
   String profileImagePath = "";
   bool ordemAlfabetica = true;
   bool carregando = false;
@@ -35,6 +36,7 @@ class _ListaPageState extends State<ListaPage> {
     });
     try {
       _contatosBack4app = await contatosBack4appRepository.obterContatos();
+      _contatosOriginais = List.from(_contatosBack4app.contatos!);
       debugPrint(_contatosBack4app.toString());
     } catch (e) {
       debugPrint("Erro ao obter contatos: $e");
@@ -77,6 +79,13 @@ class _ListaPageState extends State<ListaPage> {
                 InkWell(
                   onTap: () {
                     setState(() {
+                      if (!ordemAlfabetica) {
+                        _contatosBack4app.contatos!.sort((a, b) {
+                          return (a.nome ?? "").toLowerCase().compareTo((b.nome ?? "").toLowerCase());
+                        });
+                      } else {
+                        _contatosBack4app.contatos = List.from(_contatosOriginais);
+                      }
                       ordemAlfabetica = !ordemAlfabetica;
                     });
                   },
@@ -195,16 +204,20 @@ class _ListaPageState extends State<ListaPage> {
                               children: [
                                 InkWell(
                                   onTap: () async {
-                                    await contatosBack4appRepository.atualizaFavorito(contato);
+                                    await contatosBack4appRepository
+                                        .atualizaFavorito(contato);
                                     setState(() {
                                       contato.favorito = !(contato.favorito!);
                                     });
                                   },
                                   child: FaIcon(
-                                    contato.favorito! ? FontAwesomeIcons.solidHeart : FontAwesomeIcons.heart,
+                                    contato.favorito!
+                                        ? FontAwesomeIcons.solidHeart
+                                        : FontAwesomeIcons.heart,
                                     size: 18,
-                                    color:
-                                        isDarkMode ? Colors.white : Colors.black,
+                                    color: isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
                                   ),
                                 ),
                                 const SizedBox(width: 20),
