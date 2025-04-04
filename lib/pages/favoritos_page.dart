@@ -82,16 +82,17 @@ class _FavoritosPageState extends State<FavoritosPage> {
                             size: 22,
                           ),
                         ),
-                        onDismissed: (direction) {
-                          setState(() {
-                            // favoritos remove
-                          });
+                        onDismissed: (direction) async {
+                          await contatosBack4appRepository
+                              .atualizaFavorito(contato);
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("REMOVIDO_DOS_FAVORITOS".tr()),
+                              content: Text("REMOVIDO_DOS_FAVORITOS".tr(), style: TextStyle(
+                                color: isDarkMode ? Colors.grey.shade300 : Colors.white
+                              ),),
                               backgroundColor: isDarkMode
                                   ? Colors.grey[800]
-                                  : Colors.grey[300],
+                                  : Colors.black,
                             ),
                           );
                         },
