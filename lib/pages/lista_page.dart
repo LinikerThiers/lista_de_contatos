@@ -1,10 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:listadecontatos/model/lista_de_contatos_model.dart';
 import 'package:listadecontatos/pages/adicionar_contato_page.dart';
+import 'package:listadecontatos/repository/contatos_back4app_repository.dart';
 import 'package:listadecontatos/shared/widget/lista_app_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:listadecontatos/utils/gerenciador_de_temas.dart'; // Ajuste o caminho
+import 'package:listadecontatos/utils/gerenciador_de_temas.dart';
 
 class ListaPage extends StatefulWidget {
   const ListaPage({super.key});
@@ -14,8 +16,34 @@ class ListaPage extends StatefulWidget {
 }
 
 class _ListaPageState extends State<ListaPage> {
+  ContatosBack4appRepository contatosBack4appRepository =
+      ContatosBack4appRepository();
+  var _contatosBack4app = ListaDeContatosModel([]);
   String profileImagePath = "";
   bool ordemAlfabetica = true;
+  bool carregando = false;
+
+  @override
+  void initState() {
+    super.initState();
+    obterContatos();
+  }
+
+  Future<void> obterContatos() async {
+    setState(() {
+      carregando = true;
+    });
+    try {
+      _contatosBack4app = await contatosBack4appRepository.obterContatos();
+      debugPrint(_contatosBack4app.toString());
+    } catch (e) {
+      debugPrint("Erro ao obter contatos: $e");
+    } finally {
+      setState(() {
+        carregando = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,101 +91,117 @@ class _ListaPageState extends State<ListaPage> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: 12,
-              itemBuilder: (context, index) {
-                return Dismissible(
-                  key: Key('ID_$index'),
-                  background: Container(
-                    color: isDarkMode ? Colors.white : Colors.black,
-                    alignment: Alignment.centerRight,
-                    padding: const EdgeInsets.only(right: 20),
-                    child: FaIcon(
-                      FontAwesomeIcons.trash,
-                      color: isDarkMode ? Colors.black : Colors.white,
-                      size: 22,
+            child: carregando
+                ? Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                          isDarkMode ? Colors.grey.shade300 : Colors.black),
                     ),
-                  ),
-                  direction: DismissDirection.endToStart,
-                  onDismissed: (direction) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("CONTATO_REMOVIDO".tr()),
-                        backgroundColor:
-                            isDarkMode ? Colors.grey[800] : Colors.grey[300],
-                      ),
-                    );
-                  },
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        color: isDarkMode
-                            ? Colors.grey.shade700
-                            : Colors.grey.shade600,
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    color: isDarkMode ? Colors.grey[800] : Colors.white,
-                    margin: const EdgeInsets.symmetric(
-                      vertical: 8,
-                      horizontal: 16,
-                    ),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        radius: 20,
-                        backgroundImage: profileImagePath.isNotEmpty
-                            ? AssetImage(profileImagePath)
-                            : null,
-                        backgroundColor:
-                            isDarkMode ? Colors.grey[700] : Colors.grey[300],
-                        child: profileImagePath.isEmpty
-                            ? Icon(Icons.person,
-                                color: isDarkMode ? Colors.white : Colors.black,
-                                size: 24)
-                            : null,
-                      ),
-                      title: Text(
-                        'Liniker Thiers',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                  )
+                : ListView.builder(
+                    itemCount: _contatosBack4app.contatos!.length,
+                    itemBuilder: (context, index) {
+                      var contato = _contatosBack4app.contatos![index];
+                      return Dismissible(
+                        key: Key(contato.objectId.toString()),
+                        background: Container(
                           color: isDarkMode ? Colors.white : Colors.black,
-                        ),
-                      ),
-                      subtitle: Text(
-                        '(75) 9 0000-0000',
-                        style: TextStyle(
-                          color:
-                              isDarkMode ? Colors.grey[400] : Colors.grey[600],
-                        ),
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          FaIcon(
-                            FontAwesomeIcons.heart,
-                            size: 18,
-                            color: isDarkMode ? Colors.white : Colors.black,
+                          alignment: Alignment.centerRight,
+                          padding: const EdgeInsets.only(right: 20),
+                          child: FaIcon(
+                            FontAwesomeIcons.trash,
+                            color: isDarkMode ? Colors.black : Colors.white,
+                            size: 22,
                           ),
-                          const SizedBox(width: 20),
-                          FaIcon(
-                            FontAwesomeIcons.penToSquare,
-                            size: 18,
-                            color: isDarkMode ? Colors.white : Colors.black,
+                        ),
+                        direction: DismissDirection.endToStart,
+                        onDismissed: (direction) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("CONTATO_REMOVIDO".tr()),
+                              backgroundColor: isDarkMode
+                                  ? Colors.grey[800]
+                                  : Colors.grey[300],
+                            ),
+                          );
+                        },
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              color: isDarkMode
+                                  ? Colors.grey.shade700
+                                  : Colors.grey.shade600,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                        ],
-                      ),
-                    ),
+                          color: isDarkMode ? Colors.grey[800] : Colors.white,
+                          margin: const EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 16,
+                          ),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              radius: 20,
+                              backgroundImage: profileImagePath.isNotEmpty
+                                  ? AssetImage(profileImagePath)
+                                  : null,
+                              backgroundColor: isDarkMode
+                                  ? Colors.grey[700]
+                                  : Colors.grey[300],
+                              child: profileImagePath.isEmpty
+                                  ? Icon(Icons.person,
+                                      color: isDarkMode
+                                          ? Colors.white
+                                          : Colors.black,
+                                      size: 24)
+                                  : null,
+                            ),
+                            title: Text(
+                              contato.nome.toString(),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: isDarkMode ? Colors.white : Colors.black,
+                              ),
+                            ),
+                            subtitle: Text(
+                              contato.telefone.toString(),
+                              style: TextStyle(
+                                color: isDarkMode
+                                    ? Colors.grey[400]
+                                    : Colors.grey[600],
+                              ),
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                FaIcon(
+                                  FontAwesomeIcons.heart,
+                                  size: 18,
+                                  color:
+                                      isDarkMode ? Colors.white : Colors.black,
+                                ),
+                                const SizedBox(width: 20),
+                                FaIcon(
+                                  FontAwesomeIcons.penToSquare,
+                                  size: 18,
+                                  color:
+                                      isDarkMode ? Colors.white : Colors.black,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (_) => AdicionarContatoPage()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (_) => AdicionarContatoPage()));
         },
         backgroundColor: isDarkMode ? Colors.grey[800] : Colors.black,
         shape: RoundedRectangleBorder(

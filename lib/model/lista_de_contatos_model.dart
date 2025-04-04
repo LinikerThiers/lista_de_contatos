@@ -1,27 +1,27 @@
 class ListaDeContatosModel {
-  List<Results>? results;
+  List<ContatoBack4appModel>? contatos;
 
-  ListaDeContatosModel({this.results});
+  ListaDeContatosModel(List list, {this.contatos});
 
   ListaDeContatosModel.fromJson(Map<String, dynamic> json) {
     if (json['results'] != null) {
-      results = <Results>[];
+      contatos = <ContatoBack4appModel>[];
       json['results'].forEach((v) {
-        results!.add(Results.fromJson(v));
+        contatos!.add(ContatoBack4appModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    if (results != null) {
-      data['results'] = results!.map((v) => v.toJson()).toList();
+    if (contatos != null) {
+      data['results'] = contatos!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class Results {
+class ContatoBack4appModel {
   String? objectId;
   String? nome;
   String? email;
@@ -34,7 +34,7 @@ class Results {
   String? createdAt;
   String? updatedAt;
 
-  Results(
+  ContatoBack4appModel(
       {this.objectId,
       this.nome,
       this.email,
@@ -47,7 +47,7 @@ class Results {
       this.createdAt,
       this.updatedAt});
 
-  Results.fromJson(Map<String, dynamic> json) {
+  ContatoBack4appModel.fromJson(Map<String, dynamic> json) {
     objectId = json['objectId'];
     nome = json['nome'];
     email = json['email'];
@@ -78,6 +78,21 @@ class Results {
     data['image_profile'] = imageProfile;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
+    return data;
+  }
+
+  Map<String, dynamic> atualizarEndpoint() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['nome'] = nome;
+    data['email'] = email;
+    data['telefone'] = telefone;
+    if (aniversario != null) {
+      data['aniversario'] = aniversario!.toJson();
+    }
+    data['endereco'] = endereco;
+    data['instagram'] = instagram;
+    data['favorito'] = favorito;
+    data['image_profile'] = imageProfile;
     return data;
   }
 }
