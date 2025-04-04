@@ -7,6 +7,7 @@ import 'package:listadecontatos/repository/contatos_back4app_repository.dart';
 import 'package:listadecontatos/shared/widget/lista_app_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:listadecontatos/utils/gerenciador_de_temas.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ListaPage extends StatefulWidget {
   const ListaPage({super.key});
@@ -28,6 +29,7 @@ class _ListaPageState extends State<ListaPage> {
   void initState() {
     super.initState();
     carregarContatos();
+    carregarOrdemAlfabetica();
   }
 
   Future<void> carregarContatos() async {
@@ -37,6 +39,7 @@ class _ListaPageState extends State<ListaPage> {
     try {
       _contatosBack4app = await contatosBack4appRepository.obterContatos();
       _contatosOriginais = List.from(_contatosBack4app.contatos!);
+      aplicarOrdenacao();
       debugPrint(_contatosBack4app.toString());
     } catch (e) {
       debugPrint("Erro ao obter contatos: $e");
@@ -46,6 +49,34 @@ class _ListaPageState extends State<ListaPage> {
       });
     }
   }
+
+  Future<void> salvarOrdemAlfabetica(bool valor) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('ordemAlfabetica', valor);
+  }
+
+  Future<void> carregarOrdemAlfabetica() async {
+    final prefs = await SharedPreferences.getInstance();
+    final ordem = prefs.getBool('ordemAlfabetica') ?? false;
+    setState(() {
+      ordemAlfabetica = ordem;
+      aplicarOrdenacao();
+    });
+  }
+
+  void aplicarOrdenacao() {
+  if (_contatosBack4app.contatos != null && _contatosBack4app.contatos!.isNotEmpty) {
+    setState(() {
+      if (ordemAlfabetica) {
+        _contatosBack4app.contatos!.sort((a, b) {
+          return (a.nome ?? "").toLowerCase().compareTo((b.nome ?? "").toLowerCase());
+        });
+      } else {
+        _contatosBack4app.contatos = List.from(_contatosOriginais); 
+      }
+    });
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +108,7 @@ class _ListaPageState extends State<ListaPage> {
                   ),
                 ),
                 InkWell(
-                  onTap: () {
+                  onTap: () async {
                     setState(() {
                       if (!ordemAlfabetica) {
                         _contatosBack4app.contatos!.sort((a, b) {
@@ -88,11 +119,12 @@ class _ListaPageState extends State<ListaPage> {
                       }
                       ordemAlfabetica = !ordemAlfabetica;
                     });
+                    await salvarOrdemAlfabetica(ordemAlfabetica);
                   },
                   child: Icon(
                     ordemAlfabetica
-                        ? FontAwesomeIcons.sort
-                        : FontAwesomeIcons.arrowDownAZ,
+                        ? FontAwesomeIcons.arrowDownAZ
+                        : FontAwesomeIcons.sort,
                     color: isDarkMode ? Colors.white : Colors.black,
                   ),
                 )
