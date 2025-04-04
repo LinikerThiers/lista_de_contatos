@@ -115,13 +115,27 @@ class _ListaPageState extends State<ListaPage> {
                           ),
                         ),
                         direction: DismissDirection.endToStart,
-                        onDismissed: (direction) {
+                        onDismissed: (direction) async {
+                          String objectId = contato.objectId.toString();
+                          bool removido = await contatosBack4appRepository
+                              .removerContato(objectId);
+                          if (mounted) {
+                            setState(() {
+                              _contatosBack4app.contatos
+                                  ?.removeWhere((e) => e.objectId == objectId);
+                            });
+                          }
+
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("CONTATO_REMOVIDO".tr()),
+                              content: Text(removido
+                                  ? "CONTATO_REMOVIDO".tr()
+                                  : "ERRO_REMOVER_CONTATO".tr(), style: TextStyle(
+                                    color: isDarkMode ? Colors.white : Colors.grey[300],
+                                  ),),
                               backgroundColor: isDarkMode
                                   ? Colors.grey[800]
-                                  : Colors.grey[300],
+                                  : Colors.black,
                             ),
                           );
                         },

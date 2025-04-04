@@ -34,6 +34,7 @@
     "INGLES": "English",
     "ENVIAR": "Send",
     "DESCREVA_PROBLEMA": "Describe a Problem",
-    "ADICIONAR_CONTATO": "Add Contact"
+    "ADICIONAR_CONTATO": "Add Contact",
+    "ERRO_REMOVER_CONTATO": "Error removing contact"
 
 }

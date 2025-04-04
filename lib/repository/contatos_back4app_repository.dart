@@ -12,4 +12,13 @@ class ContatosBack4appRepository {
     return ListaDeContatosModel.fromJson(result.data);
   }
 
+  Future<bool> removerContato(String objectId) async {
+    try {
+      await _customDio.dio.delete("/Contatos/$objectId");
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
 }
