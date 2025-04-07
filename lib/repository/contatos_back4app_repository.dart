@@ -19,6 +19,23 @@ class ContatosBack4appRepository {
     return ListaDeContatosModel.fromJson(result.data);
   }
 
+  Future<void> adicionarContato(ContatoBack4appModel contato) async {
+  try {
+    await _customDio.dio.post("/Contatos", data: {
+      "nome": contato.nome,
+      "email": contato.email,
+      "telefone": contato.telefone,
+      "aniversario": contato.aniversario?.toJson(),
+      "endereco": contato.endereco,
+      "instagram": contato.instagram,
+      "favorito": false,
+      "image_profile": contato.imageProfile,
+    });
+  } catch (e) {
+    debugPrint("erro: $e");
+  }
+}
+
   Future<void> atualizaFavorito(ContatoBack4appModel contato) async {
     try{
       var url = "/Contatos/${contato.objectId}";

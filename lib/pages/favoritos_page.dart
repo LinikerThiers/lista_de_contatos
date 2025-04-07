@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -114,18 +116,22 @@ class _FavoritosPageState extends State<FavoritosPage> {
                           child: ListTile(
                             leading: CircleAvatar(
                               radius: 20,
-                              backgroundImage: profileImagePath.isNotEmpty
-                                  ? AssetImage(profileImagePath)
+                              backgroundImage: contato.imageProfile != null &&
+                                      contato.imageProfile!.isNotEmpty
+                                  ? FileImage(File(contato.imageProfile!))
                                   : null,
                               backgroundColor: isDarkMode
                                   ? Colors.grey[700]
                                   : Colors.grey[300],
-                              child: profileImagePath.isEmpty
-                                  ? Icon(Icons.person,
+                              child: (contato.imageProfile == null ||
+                                      contato.imageProfile!.isEmpty)
+                                  ? Icon(
+                                      Icons.person,
                                       color: isDarkMode
                                           ? Colors.white
                                           : Colors.black,
-                                      size: 24)
+                                      size: 24,
+                                    )
                                   : null,
                             ),
                             title: Text(

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -65,18 +67,21 @@ class _ListaPageState extends State<ListaPage> {
   }
 
   void aplicarOrdenacao() {
-  if (_contatosBack4app.contatos != null && _contatosBack4app.contatos!.isNotEmpty) {
-    setState(() {
-      if (ordemAlfabetica) {
-        _contatosBack4app.contatos!.sort((a, b) {
-          return (a.nome ?? "").toLowerCase().compareTo((b.nome ?? "").toLowerCase());
-        });
-      } else {
-        _contatosBack4app.contatos = List.from(_contatosOriginais); 
-      }
-    });
+    if (_contatosBack4app.contatos != null &&
+        _contatosBack4app.contatos!.isNotEmpty) {
+      setState(() {
+        if (ordemAlfabetica) {
+          _contatosBack4app.contatos!.sort((a, b) {
+            return (a.nome ?? "")
+                .toLowerCase()
+                .compareTo((b.nome ?? "").toLowerCase());
+          });
+        } else {
+          _contatosBack4app.contatos = List.from(_contatosOriginais);
+        }
+      });
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -112,10 +117,13 @@ class _ListaPageState extends State<ListaPage> {
                     setState(() {
                       if (!ordemAlfabetica) {
                         _contatosBack4app.contatos!.sort((a, b) {
-                          return (a.nome ?? "").toLowerCase().compareTo((b.nome ?? "").toLowerCase());
+                          return (a.nome ?? "")
+                              .toLowerCase()
+                              .compareTo((b.nome ?? "").toLowerCase());
                         });
                       } else {
-                        _contatosBack4app.contatos = List.from(_contatosOriginais);
+                        _contatosBack4app.contatos =
+                            List.from(_contatosOriginais);
                       }
                       ordemAlfabetica = !ordemAlfabetica;
                     });
@@ -202,18 +210,22 @@ class _ListaPageState extends State<ListaPage> {
                           child: ListTile(
                             leading: CircleAvatar(
                               radius: 20,
-                              backgroundImage: profileImagePath.isNotEmpty
-                                  ? AssetImage(profileImagePath)
+                              backgroundImage: contato.imageProfile != null &&
+                                      contato.imageProfile!.isNotEmpty
+                                  ? FileImage(File(contato.imageProfile!))
                                   : null,
                               backgroundColor: isDarkMode
                                   ? Colors.grey[700]
                                   : Colors.grey[300],
-                              child: profileImagePath.isEmpty
-                                  ? Icon(Icons.person,
+                              child: (contato.imageProfile == null ||
+                                      contato.imageProfile!.isEmpty)
+                                  ? Icon(
+                                      Icons.person,
                                       color: isDarkMode
                                           ? Colors.white
                                           : Colors.black,
-                                      size: 24)
+                                      size: 24,
+                                    )
                                   : null,
                             ),
                             title: Text(
@@ -270,9 +282,12 @@ class _ListaPageState extends State<ListaPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (_) => AdicionarContatoPage()));
+        onPressed: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => AdicionarContatoPage()),
+          );
+          await carregarContatos();
         },
         backgroundColor: isDarkMode ? Colors.grey[800] : Colors.black,
         shape: RoundedRectangleBorder(

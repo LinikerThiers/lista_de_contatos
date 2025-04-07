@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:listadecontatos/model/lista_de_contatos_model.dart';
+import 'package:listadecontatos/repository/contatos_back4app_repository.dart';
 import 'package:listadecontatos/utils/gerenciador_de_temas.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
@@ -16,6 +18,8 @@ class AdicionarContatoPage extends StatefulWidget {
 }
 
 class _AdicionarContatoPageState extends State<AdicionarContatoPage> {
+  ContatosBack4appRepository contatosBack4appRepository =
+      ContatosBack4appRepository();
   final TextEditingController _nomeUsuarioController = TextEditingController();
   final TextEditingController _emailUsuarioController = TextEditingController();
   final TextEditingController _telefoneUsuarioController =
@@ -100,6 +104,54 @@ class _AdicionarContatoPageState extends State<AdicionarContatoPage> {
     }
   }
 
+  void adicionarContatoButton() async {
+  final nome = _nomeUsuarioController.text.trim();
+  final email = _emailUsuarioController.text.trim();
+  final telefone = _telefoneUsuarioController.text.trim();
+  final dataNascimento = _dataDeAniversarioUsuarioController.text.trim();
+  final endereco = _enderecoUsuarioController.text.trim();
+  final instagram = _instagramUsuarioController.text.trim();
+
+  if (nome.isEmpty || telefone.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("NOME_E_TELEFONE_OBRIGATORIOS".tr())),
+    );
+    return;
+  }
+
+  Aniversario? aniversario;
+  if (dataNascimento.isNotEmpty) {
+    try {
+      final data = DateTime.parse(dataNascimento);
+      aniversario = Aniversario(
+        sType: "Date",
+        iso: data.toUtc().toIso8601String(),
+      );
+    } catch (e) {
+      debugPrint("Erro ao converter data: $e");
+    }
+  }
+
+  final contato = ContatoBack4appModel(
+    nome: nome,
+    email: email,
+    telefone: telefone,
+    aniversario: aniversario,
+    endereco: endereco,
+    instagram: instagram,
+    favorito: false,
+    imageProfile: profileImagePath,
+  );
+
+  await contatosBack4appRepository.adicionarContato(contato);
+  final contatosAtualizados = await contatosBack4appRepository.obterContatos();
+
+  print("Contato adicionado: ${contato.toJson()}");
+
+  Navigator.pop(context, contatosAtualizados);
+}
+
+
   @override
   Widget build(BuildContext context) {
     final themeManager = Provider.of<ThemeManager>(context);
@@ -165,9 +217,7 @@ class _AdicionarContatoPageState extends State<AdicionarContatoPage> {
             margin: const EdgeInsets.symmetric(horizontal: 60, vertical: 8),
             width: double.infinity,
             child: TextButton(
-              onPressed: () {
-                // salvar o contato
-              },
+              onPressed: adicionarContatoButton,
               style: TextButton.styleFrom(
                 foregroundColor: isDarkMode ? Colors.black : Colors.white,
                 backgroundColor: isDarkMode ? Colors.white : Colors.black,
