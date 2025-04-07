@@ -20,28 +20,37 @@ class ContatosBack4appRepository {
   }
 
   Future<void> adicionarContato(ContatoBack4appModel contato) async {
-  try {
-    await _customDio.dio.post("/Contatos", data: {
-      "nome": contato.nome,
-      "email": contato.email,
-      "telefone": contato.telefone,
-      "aniversario": contato.aniversario?.toJson(),
-      "endereco": contato.endereco,
-      "instagram": contato.instagram,
-      "favorito": false,
-      "image_profile": contato.imageProfile,
-    });
-  } catch (e) {
-    debugPrint("erro: $e");
+    try {
+      await _customDio.dio.post("/Contatos", data: {
+        "nome": contato.nome,
+        "email": contato.email,
+        "telefone": contato.telefone,
+        "aniversario": contato.aniversario?.toJson(),
+        "endereco": contato.endereco,
+        "instagram": contato.instagram,
+        "favorito": false,
+        "image_profile": contato.imageProfile,
+      });
+    } catch (e) {
+      debugPrint("erro: $e");
+    }
   }
-}
+
+  Future<void> atualizarContato(ContatoBack4appModel contato) async {
+    try {
+      var url = "/Contatos/${contato.objectId}";
+      await _customDio.dio.put(url, data: contato.atualizarEndpoint());
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
 
   Future<void> atualizaFavorito(ContatoBack4appModel contato) async {
-    try{
+    try {
       var url = "/Contatos/${contato.objectId}";
       var data = {"favorito": !(contato.favorito ?? false)};
       await _customDio.dio.put(url, data: data);
-    }catch (e) {
+    } catch (e) {
       debugPrint(e.toString());
     }
   }
@@ -54,5 +63,4 @@ class ContatosBack4appRepository {
       return false;
     }
   }
-
 }

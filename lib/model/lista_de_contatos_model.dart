@@ -91,7 +91,6 @@ class ContatoBack4appModel {
     }
     data['endereco'] = endereco;
     data['instagram'] = instagram;
-    data['favorito'] = favorito;
     data['image_profile'] = imageProfile;
     return data;
   }
