@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:listadecontatos/model/lista_de_contatos_model.dart';
 import 'package:listadecontatos/pages/adicionar_contato_page.dart';
+import 'package:listadecontatos/pages/detalhes_contato_page.dart';
 import 'package:listadecontatos/repository/contatos_back4app_repository.dart';
 import 'package:listadecontatos/shared/widget/lista_app_bar.dart';
 import 'package:provider/provider.dart';
@@ -192,86 +193,91 @@ class _ListaPageState extends State<ListaPage> {
                             ),
                           );
                         },
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                              color: isDarkMode
-                                  ? Colors.grey.shade700
-                                  : Colors.grey.shade600,
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          color: isDarkMode ? Colors.grey[800] : Colors.white,
-                          margin: const EdgeInsets.symmetric(
-                            vertical: 8,
-                            horizontal: 16,
-                          ),
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              radius: 20,
-                              backgroundImage: contato.imageProfile != null &&
-                                      contato.imageProfile!.isNotEmpty
-                                  ? FileImage(File(contato.imageProfile!))
-                                  : null,
-                              backgroundColor: isDarkMode
-                                  ? Colors.grey[700]
-                                  : Colors.grey[300],
-                              child: (contato.imageProfile == null ||
-                                      contato.imageProfile!.isEmpty)
-                                  ? Icon(
-                                      Icons.person,
-                                      color: isDarkMode
-                                          ? Colors.white
-                                          : Colors.black,
-                                      size: 24,
-                                    )
-                                  : null,
-                            ),
-                            title: Text(
-                              contato.nome.toString(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: isDarkMode ? Colors.white : Colors.black,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) =>
+                                    DetalhesContatoPage(contato: contato),
                               ),
-                            ),
-                            subtitle: Text(
-                              contato.telefone.toString(),
-                              style: TextStyle(
+                            );
+                          },
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(
                                 color: isDarkMode
-                                    ? Colors.grey[400]
-                                    : Colors.grey[600],
+                                    ? Colors.grey.shade700
+                                    : Colors.grey.shade600,
+                                width: 1,
                               ),
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                InkWell(
-                                  onTap: () async {
-                                    await contatosBack4appRepository
-                                        .atualizaFavorito(contato);
-                                    setState(() {
-                                      contato.favorito = !(contato.favorito!);
-                                    });
-                                  },
-                                  child: FaIcon(
-                                    contato.favorito!
-                                        ? FontAwesomeIcons.solidHeart
-                                        : FontAwesomeIcons.heart,
-                                    size: 18,
-                                    color: isDarkMode
-                                        ? Colors.white
-                                        : Colors.black,
-                                  ),
-                                ),
-                                const SizedBox(width: 20),
-                                FaIcon(
-                                  FontAwesomeIcons.penToSquare,
-                                  size: 18,
+                            color: isDarkMode ? Colors.grey[800] : Colors.white,
+                            margin: const EdgeInsets.symmetric(
+                              vertical: 8,
+                              horizontal: 16,
+                            ),
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                radius: 20,
+                                backgroundImage: contato.imageProfile != null &&
+                                        contato.imageProfile!.isNotEmpty
+                                    ? FileImage(File(contato.imageProfile!))
+                                    : null,
+                                backgroundColor: isDarkMode
+                                    ? Colors.grey[700]
+                                    : Colors.grey[300],
+                                child: (contato.imageProfile == null ||
+                                        contato.imageProfile!.isEmpty)
+                                    ? Icon(
+                                        Icons.person,
+                                        color: isDarkMode
+                                            ? Colors.white
+                                            : Colors.black,
+                                        size: 24,
+                                      )
+                                    : null,
+                              ),
+                              title: Text(
+                                contato.nome.toString(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
                                   color:
                                       isDarkMode ? Colors.white : Colors.black,
                                 ),
-                              ],
+                              ),
+                              subtitle: Text(
+                                contato.telefone.toString(),
+                                style: TextStyle(
+                                  color: isDarkMode
+                                      ? Colors.grey[400]
+                                      : Colors.grey[600],
+                                ),
+                              ),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  InkWell(
+                                    onTap: () async {
+                                      await contatosBack4appRepository
+                                          .atualizaFavorito(contato);
+                                      setState(() {
+                                        contato.favorito = !(contato.favorito!);
+                                      });
+                                    },
+                                    child: FaIcon(
+                                      contato.favorito!
+                                          ? FontAwesomeIcons.solidHeart
+                                          : FontAwesomeIcons.heart,
+                                      size: 18,
+                                      color: isDarkMode
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),

@@ -35,6 +35,7 @@
     "ENVIAR": "Send",
     "DESCREVA_PROBLEMA": "Describe a Problem",
     "ADICIONAR_CONTATO": "Add Contact",
-    "ERRO_REMOVER_CONTATO": "Error removing contact"
+    "ERRO_REMOVER_CONTATO": "Error removing contact",
+    "SALVAR": "Save"
 
 }

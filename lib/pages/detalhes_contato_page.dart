@@ -1,153 +1,68 @@
 import 'dart:io';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:listadecontatos/model/lista_de_contatos_model.dart';
-import 'package:listadecontatos/repository/contatos_back4app_repository.dart';
-import 'package:listadecontatos/utils/gerenciador_de_temas.dart';
-import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:listadecontatos/repository/contatos_back4app_repository.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:listadecontatos/model/lista_de_contatos_model.dart';
+import 'package:listadecontatos/utils/gerenciador_de_temas.dart';
 import 'package:path/path.dart' as path;
 
-class AdicionarContatoPage extends StatefulWidget {
-  const AdicionarContatoPage({super.key});
+class DetalhesContatoPage extends StatefulWidget {
+  final ContatoBack4appModel contato;
+  const DetalhesContatoPage({super.key, required this.contato});
 
   @override
-  State<AdicionarContatoPage> createState() => _AdicionarContatoPageState();
+  State<DetalhesContatoPage> createState() => _DetalhesContatoPageState();
 }
 
-class _AdicionarContatoPageState extends State<AdicionarContatoPage> {
-  ContatosBack4appRepository contatosBack4appRepository =
-      ContatosBack4appRepository();
-  final TextEditingController _nomeUsuarioController = TextEditingController();
-  final TextEditingController _emailUsuarioController = TextEditingController();
-  final TextEditingController _telefoneUsuarioController =
-      TextEditingController();
-  final TextEditingController _dataDeAniversarioUsuarioController =
-      TextEditingController();
-  final TextEditingController _enderecoUsuarioController =
-      TextEditingController();
-  final TextEditingController _instagramUsuarioController =
-      TextEditingController();
-
-  String? profileImagePath;
+class _DetalhesContatoPageState extends State<DetalhesContatoPage> {
+  late TextEditingController _nomeUsuarioController;
+  late TextEditingController _emailUsuarioController;
+  late TextEditingController _telefoneUsuarioController;
+  late TextEditingController _dataDeAniversarioUsuarioController;
+  late TextEditingController _enderecoUsuarioController;
+  late TextEditingController _instagramUsuarioController;
   DateTime? dataNascimento;
-
+  String? profileImagePath;
   final ImagePicker _picker = ImagePicker();
 
-  void _showImagePickerModal(BuildContext context) {
-    final themeManager = Provider.of<ThemeManager>(context, listen: false);
-    final isDarkMode = themeManager.isDarkMode;
+  @override
+  void initState() {
+    super.initState();
+    final contato = widget.contato;
 
-    showModalBottomSheet(
-      context: context,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
-      ),
-      builder: (BuildContext modalContext) {
-        return Container(
-          color: isDarkMode ? Colors.grey[800] : Colors.white,
-          child: SafeArea(
-            child: Wrap(
-              children: <Widget>[
-                ListTile(
-                  leading: Icon(Icons.photo_library,
-                      color: isDarkMode ? Colors.white : Colors.black),
-                  title: Text("GALERIA".tr(),
-                      style: TextStyle(
-                          color: isDarkMode ? Colors.white : Colors.black)),
-                  onTap: () {
-                    Navigator.pop(modalContext);
-                    _pickImage(ImageSource.gallery);
-                  },
-                ),
-                Divider(
-                    height: 1,
-                    color: isDarkMode ? Colors.grey[700] : Colors.grey[300]),
-                ListTile(
-                  leading: Icon(Icons.camera_alt,
-                      color: isDarkMode ? Colors.white : Colors.black),
-                  title: Text("CAMERA".tr(),
-                      style: TextStyle(
-                          color: isDarkMode ? Colors.white : Colors.black)),
-                  onTap: () {
-                    Navigator.pop(modalContext);
-                    _pickImage(ImageSource.camera);
-                  },
-                ),
-              ],
-            ),
-          ),
-        );
-      },
+    _nomeUsuarioController = TextEditingController(text: contato.nome ?? '');
+    _emailUsuarioController = TextEditingController(text: contato.email ?? '');
+    _telefoneUsuarioController =
+        TextEditingController(text: contato.telefone ?? '');
+    _dataDeAniversarioUsuarioController = TextEditingController(
+      text: contato.aniversario?.iso != null
+          ? DateFormat('dd/MM/yyyy')
+              .format(DateTime.parse(contato.aniversario!.iso!))
+          : '',
     );
+    _enderecoUsuarioController =
+        TextEditingController(text: contato.endereco ?? '');
+    _instagramUsuarioController =
+        TextEditingController(text: contato.instagram ?? '');
+    dataNascimento = contato.aniversario?.iso != null
+        ? DateTime.parse(contato.aniversario!.iso!)
+        : null;
+    profileImagePath = contato.imageProfile;
   }
 
-  Future<void> _pickImage(ImageSource source) async {
-    try {
-      final XFile? image =
-          await _picker.pickImage(source: source, imageQuality: 80);
-
-      if (image != null) {
-        final Directory appDir = await getApplicationDocumentsDirectory();
-        final String fileName = path.basename(image.path);
-        final File savedImage =
-            await File(image.path).copy('${appDir.path}/$fileName');
-
-        setState(() {
-          profileImagePath = savedImage.path;
-        });
-      }
-    } catch (e) {
-      print('Erro ao selecionar imagem: $e');
-    }
-  }
-
-  void adicionarContatoButton() async {
-    final nome = _nomeUsuarioController.text.trim();
-    final email = _emailUsuarioController.text.trim();
-    final telefone = _telefoneUsuarioController.text.trim();
-    final endereco = _enderecoUsuarioController.text.trim();
-    final instagram = _instagramUsuarioController.text.trim();
-
-    if (nome.isEmpty || telefone.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("NOME_E_TELEFONE_OBRIGATORIOS".tr())),
-      );
-      return;
-    }
-
-    Aniversario? aniversario;
-    if (dataNascimento != null) {
-      try {
-        aniversario = Aniversario(
-          sType: "Date",
-          iso: dataNascimento!.toUtc().toIso8601String(),
-        );
-      } catch (e) {
-        debugPrint("Erro ao converter data: $e");
-      }
-    }
-
-    final contato = ContatoBack4appModel(
-      nome: nome,
-      email: email,
-      telefone: telefone,
-      aniversario: aniversario,
-      endereco: endereco,
-      instagram: instagram,
-      favorito: false,
-      imageProfile: profileImagePath,
-    );
-
-    await contatosBack4appRepository.adicionarContato(contato);
-    final contatosAtualizados =
-        await contatosBack4appRepository.obterContatos();
-
-    print("Contato adicionado: ${contato.toJson()}");
-
-    Navigator.pop(context, contatosAtualizados);
+  @override
+  void dispose() {
+    _nomeUsuarioController.dispose();
+    _emailUsuarioController.dispose();
+    _telefoneUsuarioController.dispose();
+    _dataDeAniversarioUsuarioController.dispose();
+    _enderecoUsuarioController.dispose();
+    _instagramUsuarioController.dispose();
+    super.dispose();
   }
 
   @override
@@ -157,7 +72,7 @@ class _AdicionarContatoPageState extends State<AdicionarContatoPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("ADICIONAR_CONTATO".tr(),
+        title: Text(widget.contato.nome ?? '',
             style: TextStyle(color: isDarkMode ? Colors.white : Colors.black)),
         surfaceTintColor: isDarkMode ? Colors.grey[900] : Colors.white,
         backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
@@ -174,7 +89,7 @@ class _AdicionarContatoPageState extends State<AdicionarContatoPage> {
               onTap: () => _showImagePickerModal(context),
               borderRadius: BorderRadius.circular(50),
               child: CircleAvatar(
-                radius: 50,
+                radius: 60,
                 backgroundColor:
                     isDarkMode ? Colors.grey[700] : Colors.grey[300],
                 backgroundImage: profileImagePath != null
@@ -215,7 +130,7 @@ class _AdicionarContatoPageState extends State<AdicionarContatoPage> {
             margin: const EdgeInsets.symmetric(horizontal: 60, vertical: 8),
             width: double.infinity,
             child: TextButton(
-              onPressed: adicionarContatoButton,
+              onPressed: salvarContatoButton,
               style: TextButton.styleFrom(
                 foregroundColor: isDarkMode ? Colors.black : Colors.white,
                 backgroundColor: isDarkMode ? Colors.white : Colors.black,
@@ -225,7 +140,7 @@ class _AdicionarContatoPageState extends State<AdicionarContatoPage> {
                 ),
               ),
               child: Text(
-                "ADICIONAR_CONTATO".tr(),
+                "SALVAR".tr(),
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -359,5 +274,112 @@ class _AdicionarContatoPageState extends State<AdicionarContatoPage> {
         ),
       ),
     );
+  }
+
+  void salvarContatoButton() async {
+    final contatoAtualizado = ContatoBack4appModel(
+      objectId: widget.contato.objectId,
+      nome: _nomeUsuarioController.text,
+      email: _emailUsuarioController.text,
+      telefone: _telefoneUsuarioController.text,
+      aniversario: dataNascimento != null
+          ? Aniversario(
+              sType: 'Date',
+              iso: dataNascimento!.toIso8601String(),
+            )
+          : null,
+      endereco: _enderecoUsuarioController.text,
+      instagram: _instagramUsuarioController.text,
+      imageProfile: profileImagePath,
+    );
+
+    try {
+      await ContatosBack4appRepository().atualizarContato(contatoAtualizado);
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("CONTATO_ATUALIZADO_COM_SUCESSO".tr()),
+          ),
+        );
+
+        Navigator.pop(context, contatoAtualizado);
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("ERRO_AO_ATUALIZAR_CONTATO".tr()),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  void _showImagePickerModal(BuildContext context) {
+    final themeManager = Provider.of<ThemeManager>(context, listen: false);
+    final isDarkMode = themeManager.isDarkMode;
+
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+      ),
+      builder: (BuildContext modalContext) {
+        return Container(
+          color: isDarkMode ? Colors.grey[800] : Colors.white,
+          child: SafeArea(
+            child: Wrap(
+              children: <Widget>[
+                ListTile(
+                  leading: Icon(Icons.photo_library,
+                      color: isDarkMode ? Colors.white : Colors.black),
+                  title: Text("GALERIA".tr(),
+                      style: TextStyle(
+                          color: isDarkMode ? Colors.white : Colors.black)),
+                  onTap: () {
+                    Navigator.pop(modalContext);
+                    _pickImage(ImageSource.gallery);
+                  },
+                ),
+                Divider(
+                    height: 1,
+                    color: isDarkMode ? Colors.grey[700] : Colors.grey[300]),
+                ListTile(
+                  leading: Icon(Icons.camera_alt,
+                      color: isDarkMode ? Colors.white : Colors.black),
+                  title: Text("CAMERA".tr(),
+                      style: TextStyle(
+                          color: isDarkMode ? Colors.white : Colors.black)),
+                  onTap: () {
+                    Navigator.pop(modalContext);
+                    _pickImage(ImageSource.camera);
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    try {
+      final XFile? image =
+          await _picker.pickImage(source: source, imageQuality: 80);
+
+      if (image != null) {
+        final Directory appDir = await getApplicationDocumentsDirectory();
+        final String fileName = path.basename(image.path);
+        final File savedImage =
+            await File(image.path).copy('${appDir.path}/$fileName');
+
+        setState(() {
+          profileImagePath = savedImage.path;
+        });
+      }
+    } catch (e) {
+      print('Erro ao selecionar imagem: $e');
+    }
   }
 }
