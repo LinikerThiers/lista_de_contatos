@@ -37,6 +37,8 @@
     "ADICIONAR_CONTATO": "Adicionar Contato",
     "ERRO_REMOVER_CONTATO": "Erro ao remover o contato",
     "SALVAR": "Salvar",
-    "FRASE_TO_SHARE": "Compartilhar Contato"
+    "FRASE_TO_SHARE": "Compartilhar Contato",
+    "CONTATO_ATUALIZADO_COM_SUCESSO": "Contato atualizado com sucesso",
+    "ERRO_AO_ATUALIZAR_CONTATO": "Erro ao atualizar contato"
 
 }

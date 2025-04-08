@@ -205,7 +205,6 @@ class PerfilPage extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (_) => ReportarProblemaPage()));
-                          //ir para proxima pagina de relatar problema
                         },
                       ),
                     ),

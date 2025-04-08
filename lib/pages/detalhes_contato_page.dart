@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:listadecontatos/repository/contatos_back4app_repository.dart';
 import 'package:path_provider/path_provider.dart';
@@ -9,6 +10,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:listadecontatos/model/lista_de_contatos_model.dart';
 import 'package:listadecontatos/utils/gerenciador_de_temas.dart';
 import 'package:path/path.dart' as path;
+import 'package:share_plus/share_plus.dart';
 
 class DetalhesContatoPage extends StatefulWidget {
   final ContatoBack4appModel contato;
@@ -100,6 +102,46 @@ class _DetalhesContatoPageState extends State<DetalhesContatoPage> {
                         color: isDarkMode ? Colors.white : Colors.black,
                         size: 50)
                     : null,
+              ),
+            ),
+          ),
+          const SizedBox(height: 15),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 100),
+            child: ElevatedButton.icon(
+              onPressed: () async {
+                String aniversarioFormatado = (widget.contato.aniversario?.iso != null)
+                    ? DateFormat('dd/MM/yyyy')
+                        .format(DateTime.parse(widget.contato.aniversario!.iso!))
+                    : "Não informado";
+            
+                Share.share("${"FRASE_TO_SHARE".tr()}\n\n"
+                    "Nome: ${widget.contato.nome}\n"
+                    "Telefone: ${widget.contato.telefone}\n"
+                    "Email: ${widget.contato.email}\n"
+                    "Aniversário: $aniversarioFormatado\n"
+                    "Endereço: ${widget.contato.endereco}\n"
+                    "Instagram: ${widget.contato.instagram}");
+              },
+              icon: FaIcon(
+                FontAwesomeIcons.shareNodes,
+                color: isDarkMode ? Colors.white : Colors.black,
+              ),
+              label: Text(
+                "FRASE_TO_SHARE".tr(),
+                style: TextStyle(
+                  color: isDarkMode ? Colors.white : Colors.black,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: isDarkMode ? Colors.grey[800] : Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    side: BorderSide(
+                      color: Colors.grey.shade600,
+                      width: 1,
+                    )),
               ),
             ),
           ),

@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:listadecontatos/model/lista_de_contatos_model.dart';
+import 'package:listadecontatos/pages/detalhes_contato_page.dart';
 import 'package:listadecontatos/repository/contatos_back4app_repository.dart';
 import 'package:listadecontatos/shared/widget/favoritos_app_bar.dart';
 import 'package:provider/provider.dart';
@@ -102,78 +103,89 @@ class _FavoritosPageState extends State<FavoritosPage> {
                             ),
                           );
                         },
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                              color: isDarkMode
-                                  ? Colors.grey.shade700
-                                  : Colors.grey.shade600,
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          color: isDarkMode ? Colors.grey[800] : Colors.white,
-                          margin: const EdgeInsets.symmetric(
-                            vertical: 8,
-                            horizontal: 16,
-                          ),
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              radius: 20,
-                              backgroundImage: contato.imageProfile != null &&
-                                      contato.imageProfile!.isNotEmpty
-                                  ? FileImage(File(contato.imageProfile!))
-                                  : null,
-                              backgroundColor: isDarkMode
-                                  ? Colors.grey[700]
-                                  : Colors.grey[300],
-                              child: (contato.imageProfile == null ||
-                                      contato.imageProfile!.isEmpty)
-                                  ? Icon(
-                                      Icons.person,
-                                      color: isDarkMode
-                                          ? Colors.white
-                                          : Colors.black,
-                                      size: 24,
-                                    )
-                                  : null,
-                            ),
-                            title: Text(
-                              contato.nome.toString(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: isDarkMode ? Colors.white : Colors.black,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) =>
+                                    DetalhesContatoPage(contato: contato),
                               ),
-                            ),
-                            subtitle: Text(
-                              contato.telefone.toString(),
-                              style: TextStyle(
+                            );
+                          },
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(
                                 color: isDarkMode
-                                    ? Colors.grey[400]
-                                    : Colors.grey[600],
+                                    ? Colors.grey.shade700
+                                    : Colors.grey.shade600,
+                                width: 1,
                               ),
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                            trailing: InkWell(
-                              onTap: () async {
-                                String aniversarioFormatado =
-                                    (contato.aniversario?.iso != null)
-                                        ? DateFormat('dd/MM/yyyy').format(
-                                            DateTime.parse(
-                                                contato.aniversario!.iso!))
-                                        : "Não informado";
-
-                                Share.share("${"FRASE_TO_SHARE".tr()}\n\n"
-                                    "Nome: ${contato.nome}\n"
-                                    "Telefone: ${contato.telefone}\n"
-                                    "Email: ${contato.email}\n"
-                                    "Aniversário: $aniversarioFormatado\n"
-                                    "Endereço: ${contato.endereco}\n"
-                                    "Instagram: ${contato.instagram}");
-                              },
-                              child: FaIcon(
-                                FontAwesomeIcons.shareNodes,
-                                size: 18,
-                                color: isDarkMode ? Colors.white : Colors.black,
+                            color: isDarkMode ? Colors.grey[800] : Colors.white,
+                            margin: const EdgeInsets.symmetric(
+                              vertical: 8,
+                              horizontal: 16,
+                            ),
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                radius: 20,
+                                backgroundImage: contato.imageProfile != null &&
+                                        contato.imageProfile!.isNotEmpty
+                                    ? FileImage(File(contato.imageProfile!))
+                                    : null,
+                                backgroundColor: isDarkMode
+                                    ? Colors.grey[700]
+                                    : Colors.grey[300],
+                                child: (contato.imageProfile == null ||
+                                        contato.imageProfile!.isEmpty)
+                                    ? Icon(
+                                        Icons.person,
+                                        color: isDarkMode
+                                            ? Colors.white
+                                            : Colors.black,
+                                        size: 24,
+                                      )
+                                    : null,
+                              ),
+                              title: Text(
+                                contato.nome.toString(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: isDarkMode ? Colors.white : Colors.black,
+                                ),
+                              ),
+                              subtitle: Text(
+                                contato.telefone.toString(),
+                                style: TextStyle(
+                                  color: isDarkMode
+                                      ? Colors.grey[400]
+                                      : Colors.grey[600],
+                                ),
+                              ),
+                              trailing: InkWell(
+                                onTap: () async {
+                                  String aniversarioFormatado =
+                                      (contato.aniversario?.iso != null)
+                                          ? DateFormat('dd/MM/yyyy').format(
+                                              DateTime.parse(
+                                                  contato.aniversario!.iso!))
+                                          : "Não informado";
+                          
+                                  Share.share("${"FRASE_TO_SHARE".tr()}\n\n"
+                                      "Nome: ${contato.nome}\n"
+                                      "Telefone: ${contato.telefone}\n"
+                                      "Email: ${contato.email}\n"
+                                      "Aniversário: $aniversarioFormatado\n"
+                                      "Endereço: ${contato.endereco}\n"
+                                      "Instagram: ${contato.instagram}");
+                                },
+                                child: FaIcon(
+                                  FontAwesomeIcons.shareNodes,
+                                  size: 18,
+                                  color: isDarkMode ? Colors.white : Colors.black,
+                                ),
                               ),
                             ),
                           ),
