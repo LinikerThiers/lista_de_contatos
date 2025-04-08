@@ -11,6 +11,7 @@ import 'package:listadecontatos/shared/widget/lista_app_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:listadecontatos/utils/gerenciador_de_temas.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ListaPage extends StatefulWidget {
   const ListaPage({super.key});
@@ -270,6 +271,35 @@ class _ListaPageState extends State<ListaPage> {
                                       contato.favorito!
                                           ? FontAwesomeIcons.solidHeart
                                           : FontAwesomeIcons.heart,
+                                      size: 18,
+                                      color: isDarkMode
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  InkWell(
+                                    onTap: () async {
+                                      String aniversarioFormatado = (contato
+                                                  .aniversario?.iso !=
+                                              null)
+                                          ? DateFormat('dd/MM/yyyy').format(
+                                              DateTime.parse(
+                                                  contato.aniversario!.iso!))
+                                          : "Não informado";
+
+                                      Share.share("${"FRASE_TO_SHARE".tr()}\n\n"
+                                          "Nome: ${contato.nome}\n"
+                                          "Telefone: ${contato.telefone}\n"
+                                          "Email: ${contato.email}\n"
+                                          "Aniversário: $aniversarioFormatado\n"
+                                          "Endereço: ${contato.endereco}\n"
+                                          "Instagram: ${contato.instagram}");
+                                    },
+                                    child: FaIcon(
+                                      FontAwesomeIcons.shareNodes,
                                       size: 18,
                                       color: isDarkMode
                                           ? Colors.white

@@ -8,6 +8,7 @@ import 'package:listadecontatos/repository/contatos_back4app_repository.dart';
 import 'package:listadecontatos/shared/widget/favoritos_app_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:listadecontatos/utils/gerenciador_de_temas.dart';
+import 'package:share_plus/share_plus.dart';
 
 class FavoritosPage extends StatefulWidget {
   const FavoritosPage({super.key});
@@ -89,12 +90,15 @@ class _FavoritosPageState extends State<FavoritosPage> {
                               .atualizaFavorito(contato);
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("REMOVIDO_DOS_FAVORITOS".tr(), style: TextStyle(
-                                color: isDarkMode ? Colors.grey.shade300 : Colors.white
-                              ),),
-                              backgroundColor: isDarkMode
-                                  ? Colors.grey[800]
-                                  : Colors.black,
+                              content: Text(
+                                "REMOVIDO_DOS_FAVORITOS".tr(),
+                                style: TextStyle(
+                                    color: isDarkMode
+                                        ? Colors.grey.shade300
+                                        : Colors.white),
+                              ),
+                              backgroundColor:
+                                  isDarkMode ? Colors.grey[800] : Colors.black,
                             ),
                           );
                         },
@@ -149,10 +153,28 @@ class _FavoritosPageState extends State<FavoritosPage> {
                                     : Colors.grey[600],
                               ),
                             ),
-                            trailing: FaIcon(
-                              FontAwesomeIcons.penToSquare,
-                              size: 18,
-                              color: isDarkMode ? Colors.white : Colors.black,
+                            trailing: InkWell(
+                              onTap: () async {
+                                String aniversarioFormatado =
+                                    (contato.aniversario?.iso != null)
+                                        ? DateFormat('dd/MM/yyyy').format(
+                                            DateTime.parse(
+                                                contato.aniversario!.iso!))
+                                        : "Não informado";
+
+                                Share.share("${"FRASE_TO_SHARE".tr()}\n\n"
+                                    "Nome: ${contato.nome}\n"
+                                    "Telefone: ${contato.telefone}\n"
+                                    "Email: ${contato.email}\n"
+                                    "Aniversário: $aniversarioFormatado\n"
+                                    "Endereço: ${contato.endereco}\n"
+                                    "Instagram: ${contato.instagram}");
+                              },
+                              child: FaIcon(
+                                FontAwesomeIcons.shareNodes,
+                                size: 18,
+                                color: isDarkMode ? Colors.white : Colors.black,
+                              ),
                             ),
                           ),
                         ),
