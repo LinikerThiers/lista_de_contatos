@@ -25,15 +25,25 @@ class _ListaPageState extends State<ListaPage> {
       ContatosBack4appRepository();
   var _contatosBack4app = ListaDeContatosModel([]);
   List<ContatoBack4appModel> _contatosOriginais = [];
-  String profileImagePath = "";
   bool ordemAlfabetica = true;
   bool carregando = false;
+  String imagemPerfil = '';
+  String nomePerfil = '';
 
   @override
   void initState() {
     super.initState();
     carregarContatos();
     carregarOrdemAlfabetica();
+    _carregarDadosPerfil();
+  }
+
+   Future<void> _carregarDadosPerfil() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      imagemPerfil = prefs.getString("image_profile") ?? "";
+      nomePerfil = prefs.getString("nome_profile") ?? "";
+    });
   }
 
   Future<void> carregarContatos() async {
@@ -93,8 +103,8 @@ class _ListaPageState extends State<ListaPage> {
     return Scaffold(
       backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
       appBar: ListaAppBar(
-        userName: "Liniker",
-        profileImagePath: "assets/profile_image.jpg",
+        userName: nomePerfil,
+        profileImagePath: imagemPerfil,
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,

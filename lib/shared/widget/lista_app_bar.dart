@@ -1,10 +1,12 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:listadecontatos/utils/gerenciador_de_temas.dart'; 
+import 'package:listadecontatos/utils/gerenciador_de_temas.dart';
 
 class ListaAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String userName;
+  final String? userName;
   final String? profileImagePath;
 
   const ListaAppBar({
@@ -30,7 +32,7 @@ class ListaAppBar extends StatelessWidget implements PreferredSizeWidget {
           CircleAvatar(
             backgroundImage:
                 profileImagePath != null && profileImagePath!.isNotEmpty
-                    ? AssetImage(profileImagePath!) as ImageProvider
+                    ? FileImage(File(profileImagePath!)) as ImageProvider
                     : null,
             radius: 20,
             backgroundColor: isDarkMode ? Colors.grey[700] : Colors.grey[300],
@@ -44,7 +46,7 @@ class ListaAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           const SizedBox(width: 10),
           Text(
-            "${"OLA".tr()} $userName",
+            "${"OLA".tr()} ${(userName ?? '').isEmpty ? "User" : userName}",
             style: TextStyle(
               color: isDarkMode ? Colors.white : Colors.black,
               fontSize: 18,

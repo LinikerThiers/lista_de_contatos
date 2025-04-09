@@ -39,6 +39,7 @@
     "SALVAR": "Salvar",
     "FRASE_TO_SHARE": "Compartilhar Contato",
     "CONTATO_ATUALIZADO_COM_SUCESSO": "Contato atualizado com sucesso",
-    "ERRO_AO_ATUALIZAR_CONTATO": "Erro ao atualizar contato"
+    "ERRO_AO_ATUALIZAR_CONTATO": "Erro ao atualizar contato",
+    "DADOS_SALVOS_PROFILE": "Dados salvos com sucesso!"
 
 }

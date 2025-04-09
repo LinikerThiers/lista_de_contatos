@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:listadecontatos/utils/gerenciador_de_temas.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EditarPerfil extends StatefulWidget {
   const EditarPerfil({super.key});
@@ -24,8 +26,61 @@ class _EditarPerfilState extends State<EditarPerfil> {
       TextEditingController();
   final TextEditingController _instagramUsuarioController =
       TextEditingController();
-  String? profileImagePath;
+  String? ImagePath;
   DateTime? dataNascimento;
+  final ImagePicker _picker = ImagePicker();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _carregarPerfil();
+  }
+
+  Future<void> _carregarPerfil() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      _nomeUsuarioController.text = prefs.getString("nome_profile") ?? "";
+      _emailUsuarioController.text = prefs.getString("email_profile") ?? "";
+      _telefoneUsuarioController.text =
+          prefs.getString("telefone_profile") ?? "";
+      _dataDeAniversarioUsuarioController.text =
+          prefs.getString("aniversario_profile") ?? "";
+      _enderecoUsuarioController.text =
+          prefs.getString("endereco_profile") ?? "";
+      _instagramUsuarioController.text =
+          prefs.getString("instagram_profile") ?? "";
+      ImagePath = prefs.getString("image_profile") ?? "";
+    });
+  }
+
+  Future<void> _salvarperfil() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString("nome_profile", _nomeUsuarioController.text);
+    await prefs.setString("email_profile", _emailUsuarioController.text);
+    await prefs.setString("telefone_profile", _telefoneUsuarioController.text);
+    await prefs.setString(
+        "aniversario_profile", _dataDeAniversarioUsuarioController.text);
+    await prefs.setString("endereco_profile", _enderecoUsuarioController.text);
+    await prefs.setString(
+        "instagram_profile", _instagramUsuarioController.text);
+    await prefs.setString("image_profile", ImagePath ?? "");
+
+    final themeManager = Provider.of<ThemeManager>(context, listen: false);
+    final isDarkMode = themeManager.isDarkMode;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("DADOS_SALVOS_PROFILE".tr(),
+            style: TextStyle(
+              color: isDarkMode ? Colors.grey.shade300 : Colors.white,
+            )),
+        backgroundColor: isDarkMode ? Colors.grey[800] : Colors.black,
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
 
   void _showImagePickerModal(BuildContext context) {
     showModalBottomSheet(
@@ -39,46 +94,42 @@ class _EditarPerfilState extends State<EditarPerfil> {
           child: SafeArea(
             child: Wrap(
               children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                    color: isDarkMode ? Colors.grey[800] : Colors.white,
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(12)),
-                  ),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        leading: Icon(
-                          Icons.photo_library,
-                          color: isDarkMode ? Colors.white : Colors.black,
-                        ),
-                        title: Text(
-                          "GALERIA".tr(),
-                          style: TextStyle(
-                            color: isDarkMode ? Colors.white : Colors.black,
-                          ),
-                        ),
-                        onTap: () => Navigator.pop(modalContext),
-                      ),
-                      Divider(
-                          height: 1,
-                          color:
-                              isDarkMode ? Colors.grey[700] : Colors.grey[300]),
-                      ListTile(
-                        leading: Icon(
-                          Icons.camera_alt,
-                          color: isDarkMode ? Colors.white : Colors.black,
-                        ),
-                        title: Text(
-                          "CAMERA".tr(),
-                          style: TextStyle(
-                            color: isDarkMode ? Colors.white : Colors.black,
-                          ),
-                        ),
-                        onTap: () => Navigator.pop(modalContext),
-                      ),
-                    ],
-                  ),
+                ListTile(
+                  leading: Icon(Icons.photo_library,
+                      color: isDarkMode ? Colors.white : Colors.black),
+                  title: Text("GALERIA".tr(),
+                      style: TextStyle(
+                          color: isDarkMode ? Colors.white : Colors.black)),
+                  onTap: () async {
+                    Navigator.pop(modalContext);
+                    final XFile? image =
+                        await _picker.pickImage(source: ImageSource.gallery);
+                    if (image != null) {
+                      setState(() {
+                        ImagePath = image.path;
+                      });
+                    }
+                  },
+                ),
+                Divider(
+                    height: 1,
+                    color: isDarkMode ? Colors.grey[700] : Colors.grey[300]),
+                ListTile(
+                  leading: Icon(Icons.camera_alt,
+                      color: isDarkMode ? Colors.white : Colors.black),
+                  title: Text("CAMERA".tr(),
+                      style: TextStyle(
+                          color: isDarkMode ? Colors.white : Colors.black)),
+                  onTap: () async {
+                    Navigator.pop(modalContext);
+                    final XFile? image =
+                        await _picker.pickImage(source: ImageSource.camera);
+                    if (image != null) {
+                      setState(() {
+                        ImagePath = image.path;
+                      });
+                    }
+                  },
                 ),
               ],
             ),
@@ -126,10 +177,9 @@ class _EditarPerfilState extends State<EditarPerfil> {
                   radius: 50,
                   backgroundColor:
                       isDarkMode ? Colors.grey[700] : Colors.grey[300],
-                  backgroundImage: profileImagePath != null
-                      ? FileImage(File(profileImagePath!))
-                      : null,
-                  child: profileImagePath == null
+                  backgroundImage:
+                      ImagePath != null ? FileImage(File(ImagePath!)) : null,
+                  child: ImagePath == null
                       ? Icon(
                           Icons.person,
                           color: isDarkMode ? Colors.white : Colors.black,
@@ -460,9 +510,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
               margin: EdgeInsets.symmetric(horizontal: 60, vertical: 8),
               width: double.infinity,
               child: TextButton(
-                onPressed: () {
-                  // Lógica para salvar as alterações
-                },
+                onPressed: _salvarperfil,
                 style: TextButton.styleFrom(
                   foregroundColor: isDarkMode ? Colors.black : Colors.white,
                   backgroundColor: isDarkMode ? Colors.white : Colors.black,

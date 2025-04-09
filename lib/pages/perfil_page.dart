@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -6,19 +8,69 @@ import 'package:listadecontatos/pages/linguagens_page.dart';
 import 'package:listadecontatos/pages/reportar_problema_page.dart';
 import 'package:listadecontatos/utils/gerenciador_de_temas.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class PerfilPage extends StatelessWidget {
+class PerfilPage extends StatefulWidget {
   const PerfilPage({super.key});
+
+  @override
+  State<PerfilPage> createState() => _PerfilPageState();
+}
+
+class _PerfilPageState extends State<PerfilPage> {
+  String imagePath = '';
+  String nome = '';
+  String email = '';
+  String telefone = '';
+  String aniversario = '';
+  String endereco = '';
+  String instagram = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _carregarDadosPerfil();
+  }
+
+  Future<void> _carregarDadosPerfil() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      imagePath = prefs.getString("image_profile") ?? "";
+      nome = prefs.getString("nome_profile") ?? "";
+      email = prefs.getString("email_profile") ?? "";
+      telefone = prefs.getString("telefone_profile") ?? "";
+      aniversario = prefs.getString("aniversario_profile") ?? "";
+      endereco = prefs.getString("endereco_profile") ?? "";
+      instagram = prefs.getString("instagram_profile") ?? "";
+    });
+  }
+
+  Future<void> _apagarPerfil() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove("nome_profile");
+    await prefs.remove("email_profile");
+    await prefs.remove("telefone_profile");
+    await prefs.remove("aniversario_profile");
+    await prefs.remove("endereco_profile");
+    await prefs.remove("instagram_profile");
+    await prefs.remove("image_profile");
+
+    setState(() {
+      imagePath = '';
+      nome = '';
+      email = '';
+      telefone = '';
+      aniversario = '';
+      endereco = '';
+      instagram = '';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final themeManager = Provider.of<ThemeManager>(context);
     final isDarkMode = themeManager.isDarkMode;
-
-    const String profileImagePath = 'assets/profile_image.jpg';
-    const String nome = 'Liniker Thiers';
-    const String email = 'liniker@email.com';
-    const String telefone = '(75) 9 0000-0000';
 
     return SafeArea(
       child: Scaffold(
@@ -30,11 +82,10 @@ class PerfilPage extends StatelessWidget {
               Center(
                 child: CircleAvatar(
                   radius: 60,
-                  backgroundImage: profileImagePath.isNotEmpty
-                      ? const AssetImage(profileImagePath)
-                      : null,
+                  backgroundImage:
+                      imagePath.isNotEmpty ? FileImage(File(imagePath)) : null,
                   backgroundColor: Colors.grey[300],
-                  child: profileImagePath.isEmpty
+                  child: imagePath.isEmpty
                       ? Icon(Icons.person,
                           color: isDarkMode ? Colors.white : Colors.black,
                           size: 60)
@@ -43,7 +94,7 @@ class PerfilPage extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                nome,
+                (nome.isEmpty) ? "User" : nome,
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -51,14 +102,14 @@ class PerfilPage extends StatelessWidget {
                 ),
               ),
               Text(
-                email,
+                (email.isEmpty) ? "email" : email,
                 style: TextStyle(
                   fontSize: 16,
                   color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
                 ),
               ),
               Text(
-                telefone,
+                (telefone.isEmpty) ? "Telefone" : telefone,
                 style: TextStyle(
                   fontSize: 16,
                   color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
@@ -67,8 +118,12 @@ class PerfilPage extends StatelessWidget {
               const SizedBox(height: 15),
               ElevatedButton.icon(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => EditarPerfil()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => EditarPerfil()),
+                  ).then((_) {
+                    _carregarDadosPerfil();
+                  });
                 },
                 icon: FaIcon(
                   FontAwesomeIcons.penToSquare,
@@ -118,7 +173,15 @@ class PerfilPage extends StatelessWidget {
                           size: 16,
                           color: isDarkMode ? Colors.white : Colors.black,
                         ),
-                        onTap: () {},
+                        onTap: () async {
+                          Share.share("${"FRASE_TO_SHARE".tr()}\n\n"
+                              "Nome: $nome\n"
+                              "Telefone: $telefone\n"
+                              "Email: $email\n"
+                              "Aniversário: $aniversario\n"
+                              "Endereço: $endereco\n"
+                              "Instagram: $instagram");
+                        },
                       ),
                     ),
                     Card(
@@ -230,9 +293,7 @@ class PerfilPage extends StatelessWidget {
                           color: isDarkMode ? Colors.white : Colors.black,
                           size: 18,
                         ),
-                        onTap: () {
-                          //Lógica para deslogar
-                        },
+                        onTap: _apagarPerfil,
                       ),
                     ),
                   ],
