@@ -121,8 +121,8 @@ lib/
    ```
 
 ## 📸 Screenshots
-<img src="https://github.com/user-attachments/assets/9e72c6dd-6dd9-4fc4-bb02-5f6fd17e3567" width="200">
-<img src="https://github.com/user-attachments/assets/bf2ddee4-9587-4d2d-946a-66eea706ef39" width="200">
+<img src="https://github.com/user-attachments/assets/91138a33-9fc9-443d-83b8-750c18882eae" width="200">
+<img src="https://github.com/user-attachments/assets/d972e5e7-48a3-465e-b7fd-480e2f8c5238" width="200">
 <img src="https://github.com/user-attachments/assets/4ca3ff7a-9201-475f-be07-c450635a6fc3" width="200">
 <img src="https://github.com/user-attachments/assets/11f446d8-cd09-4c1d-9276-30b087c2100c" width="200">
 <img src="https://github.com/user-attachments/assets/b0f854f0-b4ef-4f77-b968-78f24676f936" width="200">
@@ -132,4 +132,4 @@ lib/
 <img src="https://github.com/user-attachments/assets/05876c78-26be-4830-8796-f201acf42e1d" width="200">
 <img src="https://github.com/user-attachments/assets/a148f085-63fb-4d0d-8779-d657b94f7985" width="200">
 <img src="https://github.com/user-attachments/assets/2142e6f7-39b4-4373-b4f8-4d5887e05fc8" width="200">
-<img src="https://github.com/user-attachments/assets/ab25f092-4f5a-4d28-b1ee-95659d0204d1" width="200">
+<img src="https://github.com/user-attachments/assets/1cadcbc5-0ecc-403f-b30d-57c5f3129958" width="200">
