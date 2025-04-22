@@ -38,7 +38,7 @@ class _ListaPageState extends State<ListaPage> {
     _carregarDadosPerfil();
   }
 
-   Future<void> _carregarDadosPerfil() async {
+  Future<void> _carregarDadosPerfil() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       imagemPerfil = prefs.getString("image_profile") ?? "";
@@ -124,30 +124,56 @@ class _ListaPageState extends State<ListaPage> {
                     color: isDarkMode ? Colors.white : Colors.black,
                   ),
                 ),
-                InkWell(
-                  onTap: () async {
-                    setState(() {
-                      if (!ordemAlfabetica) {
-                        _contatosBack4app.contatos!.sort((a, b) {
-                          return (a.nome ?? "")
-                              .toLowerCase()
-                              .compareTo((b.nome ?? "").toLowerCase());
+                Row(
+                  children: [
+                    InkWell(
+                      onTap: () async {
+                        setState(() {
+                          if (!ordemAlfabetica) {
+                            _contatosBack4app.contatos!.sort((a, b) {
+                              return (a.nome ?? "")
+                                  .toLowerCase()
+                                  .compareTo((b.nome ?? "").toLowerCase());
+                            });
+                          } else {
+                            _contatosBack4app.contatos =
+                                List.from(_contatosOriginais);
+                          }
+                          ordemAlfabetica = !ordemAlfabetica;
                         });
-                      } else {
-                        _contatosBack4app.contatos =
-                            List.from(_contatosOriginais);
-                      }
-                      ordemAlfabetica = !ordemAlfabetica;
-                    });
-                    await salvarOrdemAlfabetica(ordemAlfabetica);
-                  },
-                  child: Icon(
-                    ordemAlfabetica
-                        ? FontAwesomeIcons.arrowDownAZ
-                        : FontAwesomeIcons.sort,
-                    color: isDarkMode ? Colors.white : Colors.black,
-                  ),
-                )
+                        await salvarOrdemAlfabetica(ordemAlfabetica);
+                      },
+                      child: Row(
+                        children: [
+                          Icon(
+                            ordemAlfabetica
+                                ? FontAwesomeIcons.arrowDownAZ
+                                : FontAwesomeIcons.sort,
+                            color: isDarkMode ? Colors.white : Colors.black,
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 25),
+                    InkWell(
+                      onTap: () async {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => AdicionarContatoPage()),
+                            );
+                            await carregarContatos();
+                      },
+                      child: Row(
+                        children: [
+                          FaIcon(
+                            FontAwesomeIcons.plus,
+                            color: isDarkMode ? Colors.white : Colors.black,
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ],
             ),
           ),
@@ -326,27 +352,6 @@ class _ListaPageState extends State<ListaPage> {
                   ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => AdicionarContatoPage()),
-          );
-          await carregarContatos();
-        },
-        backgroundColor: isDarkMode ? Colors.grey[800] : Colors.black,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-          side: BorderSide(
-            color: isDarkMode ? Colors.grey[500]! : Colors.black,
-            width: 2,
-          ),
-        ),
-        child: const FaIcon(
-          FontAwesomeIcons.plus,
-          color: Colors.white,
-        ),
       ),
     );
   }
